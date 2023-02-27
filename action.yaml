@@ -44,4 +44,4 @@ runs:
   entrypoint: /bin/sh
   args:
     - -c
-    - "/docker-scout ${{ inputs.command}} ${{ inputs.image }} ${{ inputs.args }}"
+    - "/docker-scout ${{ inputs.command }} ${{ inputs.image }} ${{ inputs.args }}"
