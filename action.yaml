@@ -34,7 +34,7 @@ inputs:
     required: false
 runs:
   using: docker
-  image: docker://docker/scout-cli:ff1ff86
+  image: docker://docker/scout-cli:0.8.5
   env:
     DOCKER_SCOUT_HUB_USER: ${{ inputs.user }}
     DOCKER_SCOUT_HUB_PASSWORD: ${{ inputs.password }}
