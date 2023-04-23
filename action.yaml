@@ -1,47 +1,76 @@
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
 name: Docker Scout
 description: List vulnerabilities in images; find better base images and upload an image SBOM to Docker Scout
-author: docker
-branding:
-  icon: anchor
-  color: blue
+author: Docker
 
 inputs:
+  token:
+    required: true
+    description: Docker Hub PAT
   command:
-    description: 'Command to run'
     required: true
-    default: 'cves'
-  image: 
-    description: 'Image'
+    description: Command to run
+  debug:
     required: false
-  args: 
-    description: 'Additional args passed to Docker Scout'
+    description: Debug
+  image:
+    required: true
+    description: Image to analyze
+  platform:
     required: false
-  user: 
-    description: 'Docker Hub User'
-    required: true
-  password: 
-    description: 'Docker Hub Password/PAT'
-    required: true
+    description: Platform of the image to analyze
+  type:
+    required: false
+    description: Type of image
+  ref:
+    required: false
+    description: Ref if needed
+  to:
+    required: false
+    description: Image to compare to
+  to-type:
+    required: false
+    description: Type of image to compare
+  to-ref:
+    required: false
+    description: Ref of image to compare
+  
+  # filter flags
+  ignore-unchanged:
+    required: false
+    description: Filter out unchanged packages
+  ignore-vex:
+    required: false
+    description: Filter out CVEs that are marked not affected by a VEX statement
+  only-fixed:
+    required: false
+    description: Filter to fixable CVEs
+  only-unfixed:
+    required: false
+    description: Filter to unfixed CVEs
+  only-severities:
+    required: false
+    description: Comma separated list of severities (critical, high, medium, low, unspecified) to filter CVEs by
+  only-package-types:
+    required: false
+    description: Comma separated list of package types (like apk, deb, rpm, npm, pypi, golang, etc)
+  exit-code:
+    required: false
+    description: Return exit code '2' if vulnerability changes are detected
+    default: true
+
+  # credentials needed to private images
   registry_user: 
-    description: 'Registry User'
+    description: Registry user to pull images
     required: false
   registry_password: 
-    description: 'Registry Password'
+    description: Registry password to pull images
     required: false
-  workspace: 
-    description: 'Workspace ID'
-    required: false
+
 runs:
-  using: docker
-  image: docker://docker/scout-cli:0.8.5
-  env:
-    DOCKER_SCOUT_HUB_USER: ${{ inputs.user }}
-    DOCKER_SCOUT_HUB_PASSWORD: ${{ inputs.password }}
-    DOCKER_SCOUT_WORKSPACE_ID: ${{ inputs.workspace }}
-    DOCKER_SCOUT_REGISTRY_USER: ${{ inputs.registry_user }}
-    DOCKER_SCOUT_REGISTRY_PASSWORD: ${{ inputs.registry_password }}
-  entrypoint: /bin/sh
-  args:
-    - -c
-    - "/docker-scout ${{ inputs.command }} ${{ inputs.image }} ${{ inputs.args }}"
+  using: node16
+  main: index.js
+
+branding:
+  icon: shield
+  color: gray-dark
