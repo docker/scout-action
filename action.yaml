@@ -34,7 +34,13 @@ inputs:
   to-ref:
     required: false
     description: Ref of image to compare
-  
+  to-stream:
+    required: false
+    description: Compare to image in stream
+  to-latest:
+    required: false
+    description: Compare to latest pushed image
+
   # filter flags
   ignore-unchanged:
     required: false
@@ -59,11 +65,11 @@ inputs:
     description: Return exit code '2' if vulnerability changes are detected
     default: true
 
-  # credentials needed to private images
-  registry_user: 
+  # credentials needed to pull private images
+  registry-user: 
     description: Registry user to pull images
     required: false
-  registry_password: 
+  registry-password: 
     description: Registry password to pull images
     required: false
 
