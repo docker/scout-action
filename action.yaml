@@ -80,6 +80,9 @@ inputs:
 runs:
   using: node16
   main: index.js
+  env:
+    DOCKER_SCOUT_REGISTRY_USER: ${{ inputs.registry-user }}
+    DOCKER_SCOUT_REGISTRY_PASSWORD: ${{ inputs.registry-password }}
 
 branding:
   icon: shield
