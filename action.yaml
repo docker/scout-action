@@ -4,9 +4,6 @@ description: List vulnerabilities in images; find better base images and upload 
 author: Docker
 
 inputs:
-  token:
-    required: true
-    description: Docker Hub PAT
   command:
     required: true
     description: Command to run
@@ -64,6 +61,13 @@ inputs:
     required: false
     description: Return exit code '2' if vulnerability changes are detected
     default: true
+
+  dockerhub-user:
+    required: true
+    description: Docker Hub User
+  dockerhub-password:
+    required: true
+    description: Docker Hub PAT
 
   # credentials needed to pull private images
   registry-user: 
