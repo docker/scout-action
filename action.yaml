@@ -37,8 +37,14 @@ inputs:
   to-latest:
     required: false
     description: Compare to latest pushed image
+  to-app:
+    required: false
+    description: Name of the application when recording to a stream
 
   # filter flags
+  ignore-base:
+    required: false
+    description: Ignore vulnerabilities from base image
   ignore-unchanged:
     required: false
     description: Filter out unchanged packages

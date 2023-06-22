@@ -4,35 +4,92 @@ _Note:_ Docker Scout is a new product and is free while in early access. Read mo
 
 GitHub Action to run the Docker Scout CLI as part of your workflows.
 
-## Inputs
+You can pick one of the following command to run:
 
-## `command`
+- `quickview`: get a quick overview of an image, base image and available recommendations
+- `compare`: compare an image to a second one (for instance to `latest`)
+- `sbom`: generate the SBOM of the image
+- `stream`: record an image to a stream
 
-**Required** The name of command to run.
+# Inputs
 
-## `image`
+## Authentication
 
-Name of image, directory or archive to operate on.
+### Login to Docker Hub
 
-## `args`
+**Required**
 
-Additional args passed to Docker Scout.
+| <!-- -->    | <!-- -->    |
+|:---------------------|:-----------------------------------------|
+| `dockerhub-user`     | **required** Docker Hub user id          |
+| `dockerhub-password` | **required** Docker Hub password or PAT  |
 
-## `user`
 
-**Required** Docker Hub user id.
+### Login to a registry to pull private images (non Docker Hub)
 
-## `password`
 
-**Required** Docker Hub password or PAT.
+| <!-- -->            | <!-- -->                                             |
+|:--------------------|:-----------------------------------------------------|
+| `registry-user`     | **required** Registry user id to pull images         |
+| `registry-password` | **required** Registry password or PAT to pull images |
 
-## `registry_user`
 
-Registry user id for pull images.
+## Common Inputs (Image)
 
-## `registry_password`
+| <!-- -->  | <!-- -->                                                           |
+|:----------|:-------------------------------------------------------------------|
+| `image`   | **required** Name of the image, directory or archive to operate on |
+| `platform` | Platform of the image to analyze (or the current platform)         |
+| `type` | Type of the image to operate on (`image`, `oci-dir`, `archive` |
+| `ref` | Reference to use if the provided tarball containers multiple images, only with `type=archive` |
 
-Registry password or PAT for pulling images.
+
+## `compare` Inputs
+
+### Compare to an image
+
+| <!-- -->  | <!-- -->                                                                                         |
+|:----------|:-------------------------------------------------------------------------------------------------|
+| `to`      | **required** Name of the image, directory or archive to compare with                             |
+| `to-type` | Type of the image to compare with (`image`, `oci-dir`, `archive`                                 |
+| `to-ref`  | Reference to use if the provided tarball containers multiple images, only with `to-type=archive` |
+
+
+### Compare to a stream
+
+| <!-- -->    | <!-- -->                           |
+|:------------|:-----------------------------------|
+| `to-stream` | Name of the stream to compare with |
+| `to-latest` | Compare to latest indexed image    |
+
+One or the other needs to be defined.
+
+
+### Common Inputs
+
+| <!-- -->             | <!-- -->                                                                                                  |
+|:---------------------|:----------------------------------------------------------------------------------------------------------|
+| `ignore-unchanged`   | Filter out unchanged packages                                                                             |
+| `only-severities`    | Comma separated list of severities (`critical`, `high`, `medium`, `low`, `unspecified`) to filter CVEs by |
+| `only-package-types` | Comma separated list of package types (like `apk`, `deb`, `rpm`, `npm`, `pypi`, `golang`, etc)            |
+| `only-fixed`         | Filter to fixable CVEs                                                                                    |
+| `only-unfixed`       | Filter to unfixed CVEs                                                                                    |
+| `exit-code`          | Return exit code `2` if vulnerability changes are detected                                                |
+
+## `stream` Inputs
+
+To record an image to a stream, some constraints are applied on top of the above common inputs:
+
+- `type` needs to be `image` (or not set)
+- `image` needs to include the digest, so in the form `[registry/]{namespace}/{repository}@sha256:{digest}`
+
+| <!-- -->    | <!-- -->                                    |
+|:------------|:--------------------------------------------|
+| `to-stream` | Name of the stream to record the image      |
+| `to-latest` | Record to latest indexed stream             |
+| `to-app`    | Name of the application to record the image |
+
+Either `to-stream` or `to-latest` needs to be set.
 
 ## Example usage
 
@@ -114,12 +171,13 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         uses: docker/scout-action@dd36f5b0295baffa006aa6623371f226cc03e506
         with:
+          dockerhub-user: ${{ secrets.DOCKER_USER }}
+          dockerhub-password: ${{ secrets.DOCKER_PAT }}
           command: compare
           image: ${{ steps.meta.outputs.tags }}
           to: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:edge
           ignore-unchanged: true
           only-severities: critical,high
-          token: ${{ secrets.DOCKER_PAT }}
 ```  
 
 # License
