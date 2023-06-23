@@ -69,10 +69,10 @@ inputs:
     default: true
 
   dockerhub-user:
-    required: true
+    required: false
     description: Docker Hub User
   dockerhub-password:
-    required: true
+    required: false
     description: Docker Hub PAT
 
   # credentials needed to pull private images

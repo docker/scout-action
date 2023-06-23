@@ -17,12 +17,14 @@ You can pick one of the following command to run:
 
 ### Login to Docker Hub
 
-**Required**
+To use `scout` features you need to be authenticated against Docker Hub.
 
-| <!-- -->    | <!-- -->    |
-|:---------------------|:-----------------------------------------|
-| `dockerhub-user`     | **required** Docker Hub user id          |
-| `dockerhub-password` | **required** Docker Hub password or PAT  |
+You can use the parameters below to authenticate, or you can use the [`docker/login-action`](https://github.com/docker/login-action). 
+
+| <!-- -->    | <!-- -->                   |
+|:---------------------|:---------------------------|
+| `dockerhub-user`     | Docker Hub user id         |
+| `dockerhub-password` | Docker Hub password or PAT |
 
 
 ### Login to a registry to pull private images (non Docker Hub)
@@ -171,8 +173,6 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         uses: docker/scout-action@dd36f5b0295baffa006aa6623371f226cc03e506
         with:
-          dockerhub-user: ${{ secrets.DOCKER_USER }}
-          dockerhub-password: ${{ secrets.DOCKER_PAT }}
           command: compare
           image: ${{ steps.meta.outputs.tags }}
           to: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:edge
