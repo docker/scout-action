@@ -66,7 +66,7 @@ inputs:
   exit-code:
     required: false
     description: Return exit code '2' if vulnerability changes are detected
-    default: true
+    default: "true"
 
   dockerhub-user:
     required: false
@@ -81,6 +81,18 @@ inputs:
     required: false
   registry-password: 
     description: Registry password to pull images
+    required: false
+
+  # comments
+  github-token:
+    description: Required to write comments
+    required: false
+  write-comment:
+    description: Write the output as a Pull Request comment
+    required: false
+    default: "true"
+  keep-previous-comments:
+    description: If set, keep but hide previous comment. If not set, keep and update one single comment per job
     required: false
 
 runs:

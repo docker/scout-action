@@ -46,6 +46,23 @@ You can use the parameters below to authenticate, or you can use the [`docker/lo
 | `ref` | Reference to use if the provided tarball containers multiple images, only with `type=archive` |
 
 
+## Pull Request Comments
+
+When triggered by a `pull_request` event, the output of the scout command can be written as a comment.
+
+This behaviour is **enabled** by default.
+
+By default one single comment per job step will be kept and updated at each run.
+If you prefer to keep previous comments but hide them, set the `keep-previous-comments` parameter to `true`.
+
+`pull-requests: write` permission is required to allow the GitHub action to create the comment.
+
+| <!-- -->                 | <!-- -->                                                                                       |
+|:-------------------------|:-----------------------------------------------------------------------------------------------|
+| `github-token`           | GitHub Token to create the comment. `${{ secrets.GITHUB_TOKEN }}`                              |
+| `write-comment`          | Boolean, write a comment with scout output. `true` by default                                  |
+| `keep-previous-comments` | If set, keep but hide previous comment. If not set, keep and update one single comment per job |
+
 ## `compare` Inputs
 
 ### Compare to an image
@@ -119,6 +136,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      pull-request: write
 
     steps:
       - name: Checkout repository
@@ -178,6 +196,8 @@ jobs:
           to: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:edge
           ignore-unchanged: true
           only-severities: critical,high
+          write-comment: true
+          github-token: ${{ secrets.GITHUB_TOKEN }} # to be able to write the comment
 ```  
 
 # License
