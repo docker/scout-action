@@ -69,7 +69,7 @@ If you prefer to keep previous comments but hide them, set the `keep-previous-co
 
 | <!-- -->                 | <!-- -->                                                                                       |
 |:-------------------------|:-----------------------------------------------------------------------------------------------|
-| `github-token`           | GitHub Token to create the comment. `${{ secrets.GITHUB_TOKEN }}`                              |
+| `github-token`           | GitHub Token to create the comment. `github.token` by default                                  |
 | `write-comment`          | Boolean, write a comment with scout output. `true` by default                                  |
 | `keep-previous-comments` | If set, keep but hide previous comment. If not set, keep and update one single comment per job |
 

@@ -13,7 +13,7 @@ inputs:
   summary:
     required: false
     description: Publish the output as GitHub Action summary
-    default: "true"
+    default: true
 
   image:
     required: false
@@ -91,12 +91,13 @@ inputs:
 
   # comments
   github-token:
-    description: Required to write comments
+    description: GitHub Token to write comments
+    default: ${{ github.token }}
     required: false
   write-comment:
     description: Write the output as a Pull Request comment
     required: false
-    default: "true"
+    default: true
   keep-previous-comments:
     description: If set, keep but hide previous comment. If not set, keep and update one single comment per job
     required: false
