@@ -40,11 +40,21 @@ You can use the parameters below to authenticate, or you can use the [`docker/lo
 
 | <!-- -->  | <!-- -->                                                           |
 |:----------|:-------------------------------------------------------------------|
-| `image`   | **required** Name of the image, directory or archive to operate on |
+| `image`   | Name of the image, directory or archive to operate on |
 | `platform` | Platform of the image to analyze (or the current platform)         |
 | `type` | Type of the image to operate on (`image`, `oci-dir`, `archive` |
 | `ref` | Reference to use if the provided tarball containers multiple images, only with `type=archive` |
 
+If `image` is not set (or empty) the most recently built image, if any, will be used instead.
+
+## Step Summary
+
+By default the Markdown output of the command (if supported) will be displayed as a [Job Summary](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/).
+This can be disabled if needed.
+
+| <!-- -->  | <!-- -->                                        |
+|:----------|:------------------------------------------------|
+| `summary` | **default: true** Display output as Job Summary |
 
 ## Pull Request Comments
 

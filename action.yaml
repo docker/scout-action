@@ -10,8 +10,13 @@ inputs:
   debug:
     required: false
     description: Debug
+  summary:
+    required: false
+    description: Publish the output as GitHub Action summary
+    default: "true"
+
   image:
-    required: true
+    required: false
     description: Image to analyze
   platform:
     required: false
@@ -22,6 +27,8 @@ inputs:
   ref:
     required: false
     description: Ref if needed
+
+  # compare flags
   to:
     required: false
     description: Image to compare to
@@ -66,7 +73,6 @@ inputs:
   exit-code:
     required: false
     description: Return exit code '2' if vulnerability changes are detected
-    default: "true"
 
   dockerhub-user:
     required: false
