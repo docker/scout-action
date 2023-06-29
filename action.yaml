@@ -6,7 +6,9 @@ author: Docker
 inputs:
   command:
     required: true
-    description: Command to run
+    description: |
+      Command(s) to run.
+      Use a comma separated list to run several commands on the same set of parameters, for instance quickview,compare
   debug:
     required: false
     description: Debug

@@ -13,6 +13,24 @@ You can pick one of the following command to run:
 
 # Inputs
 
+## Command
+
+You can run one or multiple commands in the same GitHub Action run. Use a comma separated list to run several commands.
+
+| <!-- -->             | <!-- -->                                                                  |
+|:---------------------|:--------------------------------------------------------------------------|
+| `compare`            | Single command to run or comma separated list of commands to run in order |
+
+The commands will be run in the order of the value, and will share the same parameters.
+
+For instance, if you built an image and want to display a `quickview` as well as to `compare` it against the latest indexed one, set the action as following:
+
+```yaml
+command: quickview,compare
+image: ${{ steps.meta.outputs.tags }}
+to-latest: true
+```
+
 ## Authentication
 
 ### Login to Docker Hub
