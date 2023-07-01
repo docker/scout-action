@@ -11,7 +11,7 @@ You can pick one of the following command to run:
 - `sbom`: generate the SBOM of the image
 - `stream`: record an image to a stream
 
-![Screenshot](.github/compare_pr_comment.png)
+[![Screenshot](.github/compare_pr_comment.png)](https://github.com/docker/scout-demo-service/pull/2)
 
 # Inputs
 
