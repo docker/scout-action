@@ -8,6 +8,7 @@ You can pick one of the following command to run:
 
 - `quickview`: get a quick overview of an image, base image and available recommendations
 - `compare`: compare an image to a second one (for instance to `latest`)
+- `cves`: display vulnerabilities of an image
 - `sbom`: generate the SBOM of the image
 - `stream`: record an image to a stream
 
@@ -124,6 +125,17 @@ One or the other needs to be defined.
 | `only-fixed`         | Filter to fixable CVEs                                                                                    |
 | `only-unfixed`       | Filter to unfixed CVEs                                                                                    |
 | `exit-code`          | Return exit code `2` if vulnerability changes are detected                                                |
+
+## `cves` Inputs
+
+| <!-- -->             | <!-- -->                                                                                                  |
+|:---------------------|:----------------------------------------------------------------------------------------------------------|
+| `only-severities`    | Comma separated list of severities (`critical`, `high`, `medium`, `low`, `unspecified`) to filter CVEs by |
+| `only-package-types` | Comma separated list of package types (like `apk`, `deb`, `rpm`, `npm`, `pypi`, `golang`, etc)            |
+| `only-fixed`         | Filter to fixable CVEs                                                                                    |
+| `only-unfixed`       | Filter to unfixed CVEs                                                                                    |
+| `ignore-base`        | Ignore base image vulnerabilities                                                                         |
+
 
 ## `stream` Inputs
 
