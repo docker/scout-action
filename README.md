@@ -94,6 +94,11 @@ If you prefer to keep previous comments but hide them, set the `keep-previous-co
 | `write-comment`          | Boolean, write a comment with scout output. `true` by default                                  |
 | `keep-previous-comments` | If set, keep but hide previous comment. If not set, keep and update one single comment per job |
 
+## Output
+
+The text version of the command output will be displayed in the logs. The markdown version (if exists) of the command output will be
+set as an output of the step, using the command name as identifier, and will be displayed as Pull Request comment or Step Summary.
+
 ## `compare` Inputs
 
 ### Compare to an image
