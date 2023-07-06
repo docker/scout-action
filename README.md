@@ -9,6 +9,7 @@ You can pick one of the following command to run:
 - `quickview`: get a quick overview of an image, base image and available recommendations
 - `compare`: compare an image to a second one (for instance to `latest`)
 - `cves`: display vulnerabilities of an image
+- `recommendations`: display available base image updates and remediation recommendations
 - `sbom`: generate the SBOM of the image
 - `stream`: record an image to a stream
 
@@ -140,6 +141,13 @@ One or the other needs to be defined.
 | `only-fixed`         | Filter to fixable CVEs                                                                                    |
 | `only-unfixed`       | Filter to unfixed CVEs                                                                                    |
 | `ignore-base`        | Ignore base image vulnerabilities                                                                         |
+
+## `recommendations` Inputs
+
+| <!-- -->       | <!-- -->                                        |
+| :------------- | :---------------------------------------------- |
+| `only-refresh` | Only display base image refresh recommendations |
+| `only-update`  | Only display base image update recommendations  |
 
 
 ## `stream` Inputs
