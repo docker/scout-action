@@ -23,7 +23,7 @@ You can run one or multiple commands in the same GitHub Action run. Use a comma 
 
 | <!-- -->             | <!-- -->                                                                  |
 |:---------------------|:--------------------------------------------------------------------------|
-| `compare`            | Single command to run or comma separated list of commands to run in order |
+| `command`            | Single command to run or comma separated list of commands to run in order |
 
 The commands will be run in the order of the value, and will share the same parameters.
 
