@@ -76,6 +76,10 @@ inputs:
     required: false
     description: Return exit code '2' if vulnerability changes are detected
 
+  sarif-file:
+    required: false
+    description: Write output to a SARIF file for further processing or upload into GitHub code scanning
+
   dockerhub-user:
     required: false
     description: Docker Hub User
