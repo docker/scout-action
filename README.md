@@ -21,9 +21,9 @@ You can pick one of the following command to run:
 
 You can run one or multiple commands in the same GitHub Action run. Use a comma separated list to run several commands.
 
-| <!-- -->   | <!-- -->     | <!-- -->                                                                                                                                                                                                                      |
-|:-----------|:-------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `command`  | **required** |  Single command to run or comma separated list of commands to run in order.<br/>Possible values:<br/><ul><li>`quickview`</li><li>`compare`</li><li>`cves`</li><li>`recommendations`</li><li>`sbom`</li><li>`stream`</li></ul> |
+| <!-- -->   | <!-- -->     | <!-- --> | <!-- -->                                                                                                                                                                                                                     |
+|:-----------|:-------------|:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `command`  | **required** | `string` | Single command to run or comma separated list of commands to run in order.<br/>Possible values:<br/><ul><li>`quickview`</li><li>`compare`</li><li>`cves`</li><li>`recommendations`</li><li>`sbom`</li><li>`stream`</li></ul> |
 
 The commands will be run in the order of the value, and will share the same parameters.
 
@@ -43,29 +43,29 @@ To use `scout` features you need to be authenticated against Docker Hub.
 
 You can use the parameters below to authenticate, or you can use the [`docker/login-action`](https://github.com/docker/login-action). 
 
-| <!-- -->             | <!-- -->     | <!-- -->                   |
-|:---------------------|:-------------|:---------------------------|
-| `dockerhub-user`     | **optional** | Docker Hub user id         |
-| `dockerhub-password` | **optional** | Docker Hub password or PAT |
+| <!-- -->             | <!-- -->     | <!-- --> | <!-- -->                   |
+|:---------------------|:-------------|:---------|:---------------------------|
+| `dockerhub-user`     | **optional** | `string` | Docker Hub user id         |
+| `dockerhub-password` | **optional** | `string` | Docker Hub password or PAT |
 
 
 ### Login to a registry to pull private images (non Docker Hub)
 
 
-| <!-- -->            | <!-- -->                                         | <!-- -->                                |
-|:--------------------|:-------------------------------------------------|-----------------------------------------|
-| `registry-user`     | **required** to pull from other private registry | Registry user id to pull images         |
-| `registry-password` | **required** to pull from other private registry | Registry password or PAT to pull images |
+| <!-- -->            | <!-- -->                                         | <!-- --> | <!-- -->                                |
+|:--------------------|:-------------------------------------------------|:---------|:----------------------------------------|
+| `registry-user`     | **required** to pull from other private registry | `string` | Registry user id to pull images         |
+| `registry-password` | **required** to pull from other private registry | `string` | Registry password or PAT to pull images |
 
 
 ## Common Inputs (Image)
 
-| <!-- -->   | <!-- -->                                 | <!-- -->                                                                                      |
-|:-----------|:-----------------------------------------|:----------------------------------------------------------------------------------------------|
-| `image`    | **optional** (*)                         | Name of the image, directory or archive to operate on                                         |
-| `platform` | **optional** current platform by default | Platform of the image to analyze (or the current platform)                                    |
-| `type`     | **optional** default is `image`          | Type of the image to operate on (`image`, `oci-dir`, `archive`                                |
-| `ref`      | **optional** default is empty            | Reference to use if the provided tarball containers multiple images, only with `type=archive` |
+| <!-- -->   | <!-- -->                                 | <!-- --> | <!-- -->                                                                                      |
+|:-----------|:-----------------------------------------|:---------|:----------------------------------------------------------------------------------------------|
+| `image`    | **optional** (*)                         | `string` | Name of the image, directory or archive to operate on                                         |
+| `platform` | **optional** current platform by default | `string` | Platform of the image to analyze (or the current platform)                                    |
+| `type`     | **optional** default is `image`          | `string` | Type of the image to operate on (`image`, `oci-dir`, `archive`                                |
+| `ref`      | **optional** default is empty            | `string` | Reference to use if the provided tarball containers multiple images, only with `type=archive` |
 
 (*) If `image` is not set (or empty) the most recently built image, if any, will be used instead.
 
@@ -74,9 +74,9 @@ You can use the parameters below to authenticate, or you can use the [`docker/lo
 By default the Markdown output of the command (if supported) will be displayed as a [Job Summary](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/).
 This can be disabled if needed.
 
-| <!-- -->  | <!-- -->                       | <!-- -->                       |
-|:----------|:-------------------------------|:-------------------------------|
-| `summary` | **optional** default is `true` |  Display output as Job Summary |
+| <!-- -->  | <!-- -->                       | <!-- -->  | <!-- -->                      |
+|:----------|:-------------------------------|:----------|:------------------------------|
+| `summary` | **optional** default is `true` | `boolean` | Display output as Job Summary |
 
 ## Pull Request Comments
 
@@ -89,11 +89,11 @@ If you prefer to keep previous comments but hide them, set the `keep-previous-co
 
 `pull-requests: write` permission is required to allow the GitHub action to create the comment.
 
-| <!-- -->                 | <!-- -->                               | <!-- -->                                                                                       |
-|:-------------------------|:---------------------------------------|:-----------------------------------------------------------------------------------------------|
-| `github-token`           | **optional** default is `github.token` | GitHub Token to create the comment                                                             |
-| `write-comment`          | **optional** default is `true`         | Boolean, write a comment with scout output                                                     |
-| `keep-previous-comments` | **optional** default is `false`        | If set, keep but hide previous comment. If not set, keep and update one single comment per job |
+| <!-- -->                 | <!-- -->                               | <!-- -->  | <!-- -->                                                                                       |
+|:-------------------------|:---------------------------------------|:----------|:-----------------------------------------------------------------------------------------------|
+| `github-token`           | **optional** default is `github.token` | `string`  | GitHub Token to create the comment                                                             |
+| `write-comment`          | **optional** default is `true`         | `boolean` | Boolean, write a comment with scout output                                                     |
+| `keep-previous-comments` | **optional** default is `false`        | `boolean` | If set, keep but hide previous comment. If not set, keep and update one single comment per job |
 
 ## Output
 
@@ -104,50 +104,50 @@ set as an output of the step, using the command name as identifier, and will be 
 
 ### Compare to an image
 
-| <!-- -->  | <!-- -->                        | <!-- -->                                                                                         |
-|:----------|:--------------------------------|:-------------------------------------------------------------------------------------------------|
-| `to`      | **required**                    | Name of the image, directory or archive to compare with                                          |
-| `to-type` | **optional** default is `image` | Type of the image to compare with (`image`, `oci-dir`, `archive`                                 |
-| `to-ref`  | **optional** default is empty   | Reference to use if the provided tarball containers multiple images, only with `to-type=archive` |
+| <!-- -->  | <!-- -->                        | <!-- --> | <!-- -->                                                                                         |
+|:----------|:--------------------------------|:---------|:-------------------------------------------------------------------------------------------------|
+| `to`      | **required**                    | `string` | Name of the image, directory or archive to compare with                                          |
+| `to-type` | **optional** default is `image` | `string` | Type of the image to compare with (`image`, `oci-dir`, `archive`                                 |
+| `to-ref`  | **optional** default is empty   | `string` | Reference to use if the provided tarball containers multiple images, only with `to-type=archive` |
 
 
 ### Compare to a stream
 
-| <!-- -->    | <!-- --> | <!-- -->                           |
-|:------------|:---------|:-----------------------------------|
-| `to-stream` | (*)      | Name of the stream to compare with |
-| `to-latest` | (*)      | Compare to latest indexed image |
+| <!-- -->    | <!-- --> | <!-- -->  | <!-- -->                           |
+|:------------|:---------|:----------|:-----------------------------------|
+| `to-stream` | (*)      | `string`  | Name of the stream to compare with |
+| `to-latest` | (*)      | `boolean` | Compare to latest indexed image    |
 
 (*) One or the other needs to be defined.
 
 
 ### Common Inputs
 
-| <!-- -->             | <!-- -->                                       | <!-- -->                                                                                                  |
-|:---------------------|:-----------------------------------------------|:----------------------------------------------------------------------------------------------------------|
-| `ignore-unchanged`   | **optional** default is `false`                | Filter out unchanged packages                                                                             |
-| `only-severities`    | **optional** default is empty (all severities) | Comma separated list of severities (`critical`, `high`, `medium`, `low`, `unspecified`) to filter CVEs by |
-| `only-package-types` | **optional** default is empty (all types)      | Comma separated list of package types (like `apk`, `deb`, `rpm`, `npm`, `pypi`, `golang`, etc)            |
-| `only-fixed`         | **optional** default is `false`                | Filter to fixable CVEs                                                                                    |
-| `only-unfixed`       | **optional** default is `false`                | Filter to unfixed CVEs                                                                                    |
-| `exit-code`          | **optional** default is `false`                | Return exit code `2` if vulnerability changes are detected                                                |
+| <!-- -->             | <!-- -->                                       | <!-- -->  | <!-- -->                                                                                                  |
+|:---------------------|:-----------------------------------------------|:----------|:----------------------------------------------------------------------------------------------------------|
+| `ignore-unchanged`   | **optional** default is `false`                | `boolean` | Filter out unchanged packages                                                                             |
+| `only-severities`    | **optional** default is empty (all severities) | `string`  | Comma separated list of severities (`critical`, `high`, `medium`, `low`, `unspecified`) to filter CVEs by |
+| `only-package-types` | **optional** default is empty (all types)      | `string`  | Comma separated list of package types (like `apk`, `deb`, `rpm`, `npm`, `pypi`, `golang`, etc)            |
+| `only-fixed`         | **optional** default is `false`                | `boolean` | Filter to fixable CVEs                                                                                    |
+| `only-unfixed`       | **optional** default is `false`                | `boolean` | Filter to unfixed CVEs                                                                                    |
+| `exit-code`          | **optional** default is `false`                | `boolean` | Return exit code `2` if vulnerability changes are detected                                                |
 
 ## `cves` Inputs
 
-| <!-- -->             | <!-- -->                                       | <!-- -->                                                                                                  |
-|:---------------------|:-----------------------------------------------|:----------------------------------------------------------------------------------------------------------|
-| `only-severities`    | **optional** default is empty (all severities) | Comma separated list of severities (`critical`, `high`, `medium`, `low`, `unspecified`) to filter CVEs by |
-| `only-package-types` | **optional** default is empty (all types)      | Comma separated list of package types (like `apk`, `deb`, `rpm`, `npm`, `pypi`, `golang`, etc)            |
-| `only-fixed`         | **optional** default is `false`                | Filter to fixable CVEs                                                                                    |
-| `only-unfixed`       | **optional** default is `false`                | Filter to unfixed CVEs                                                                                    |
-| `ignore-base`        | **optional** default is `false`                | Ignore base image vulnerabilities                                                                         |
+| <!-- -->             | <!-- -->                                       | <!-- -->  | <!-- -->                                                                                                  |
+|:---------------------|:-----------------------------------------------|:----------|:----------------------------------------------------------------------------------------------------------|
+| `only-severities`    | **optional** default is empty (all severities) | `string`  | Comma separated list of severities (`critical`, `high`, `medium`, `low`, `unspecified`) to filter CVEs by |
+| `only-package-types` | **optional** default is empty (all types)      | `string`  | Comma separated list of package types (like `apk`, `deb`, `rpm`, `npm`, `pypi`, `golang`, etc)            |
+| `only-fixed`         | **optional** default is `false`                | `boolean` | Filter to fixable CVEs                                                                                    |
+| `only-unfixed`       | **optional** default is `false`                | `boolean` | Filter to unfixed CVEs                                                                                    |
+| `ignore-base`        | **optional** default is `false`                | `boolean` | Ignore base image vulnerabilities                                                                         |
 
 ## `recommendations` Inputs
 
-| <!-- -->       | <!-- -->                         | <!-- -->                                         |
-|:---------------|:---------------------------------|:-------------------------------------------------|
-| `only-refresh` | **optional** default is `false`  | Only display base image refresh recommendations  |
-| `only-update`  | **optional** default is `false`  | Only display base image update recommendations   |
+| <!-- -->       | <!-- -->                         | <!-- -->  | <!-- -->                                        |
+|:---------------|:---------------------------------|:----------|:------------------------------------------------|
+| `only-refresh` | **optional** default is `false`  | `boolean` | Only display base image refresh recommendations |
+| `only-update`  | **optional** default is `false`  | `boolean` | Only display base image update recommendations  |
 
 
 ## `stream` Inputs
@@ -157,15 +157,17 @@ To record an image to a stream, some constraints are applied on top of the above
 - `type` needs to be `image` (or not set)
 - `image` needs to include the digest, so in the form `[registry/]{namespace}/{repository}@sha256:{digest}`
 
-| <!-- -->    | <!-- -->     | <!-- -->                                    |
-|:------------|:-------------|:--------------------------------------------|
-| `to-stream` | (*)          | Name of the stream to record the image      |
-| `to-latest` | (*)          | Record to latest indexed stream             |
-| `to-app`    | **required** | Name of the application to record the image |
+| <!-- -->    | <!-- -->     | <!-- -->  | <!-- -->                                    |
+|:------------|:-------------|:----------|:--------------------------------------------|
+| `to-stream` | (*)          | `string`  | Name of the stream to record the image      |
+| `to-latest` | (*)          | `boolean` | Record to latest indexed stream             |
+| `to-app`    | **required** | `string`  | Name of the application to record the image |
 
 (*) Either `to-stream` or `to-latest` needs to be set.
 
 ## Example usage
+
+### Build an image, push and compare
 
 ```yaml
 name: Docker
@@ -254,6 +256,25 @@ jobs:
           write-comment: true
           github-token: ${{ secrets.GITHUB_TOKEN }} # to be able to write the comment
 ```  
+
+### All-in-one
+
+For the latest built image, display:
+- the vulnerabilities (ignoring the base image, only displaying vulnerabilities with a fix available)
+- the available recommendations
+- compare it to the latest image indexed for the same repository (only displaying unchanged packages and vulnerabilities that already have a fix)
+
+```yaml
+- name: Docker Scout
+  id: docker-scout
+  uses: docker/scout-action@v0.18.1
+  with:
+    command: cves,recommendations,compare
+    to-latest: true
+    ignore-base: true
+    ignore-unchanged: true
+    only-fixed: true
+```
 
 # License
 
