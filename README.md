@@ -134,6 +134,7 @@ set as an output of the step, using the command name as identifier, and will be 
 
 ## `cves` Inputs
 
+<<<<<<< HEAD
 | <!-- -->             | <!-- -->                                       | <!-- -->  | <!-- -->                                                                                                  |
 |:---------------------|:-----------------------------------------------|:----------|:----------------------------------------------------------------------------------------------------------|
 | `only-severities`    | **optional** default is empty (all severities) | `string`  | Comma separated list of severities (`critical`, `high`, `medium`, `low`, `unspecified`) to filter CVEs by |
@@ -141,6 +142,7 @@ set as an output of the step, using the command name as identifier, and will be 
 | `only-fixed`         | **optional** default is `false`                | `boolean` | Filter to fixable CVEs                                                                                    |
 | `only-unfixed`       | **optional** default is `false`                | `boolean` | Filter to unfixed CVEs                                                                                    |
 | `ignore-base`        | **optional** default is `false`                | `boolean` | Ignore base image vulnerabilities                                                                         |
+| `sarif-file`         | **optional** default is empty (no output file) | Write output to a SARIF file for further processing or upload into GitHub code scanning                   |
 
 ## `recommendations` Inputs
 
