@@ -266,15 +266,38 @@ For the latest built image, display:
 - compare it to the latest image indexed for the same repository (only displaying unchanged packages and vulnerabilities that already have a fix)
 
 ```yaml
-- name: Docker Scout
-  id: docker-scout
-  uses: docker/scout-action@v0.18.1
-  with:
-    command: cves,recommendations,compare
-    to-latest: true
-    ignore-base: true
-    ignore-unchanged: true
-    only-fixed: true
+        - name: Docker Scout
+          id: docker-scout
+          uses: docker/scout-action@v0.18
+          with:
+            command: cves,recommendations,compare
+            to-latest: true
+            ignore-base: true
+            ignore-unchanged: true
+            only-fixed: true
+```
+
+### Analyze vulnerabilities and upload report to GitHub code scanning
+
+When GitHub code scanning is enabled, the `sarif-file` input can be used to upload the vulnerabilities to GitHub.
+
+```yaml
+      - name: Analyze for critical and high CVEs
+        id: docker-scout-cves
+        if: ${{ github.event_name != 'pull_request_target' }}
+        uses: docker/scout-action@v0.18
+        with:
+          command: cves
+          image: ${{ steps.meta.outputs.tags }}
+          sarif-file: sarif.output.json
+          summary: true
+      
+      - name: Upload SARIF result
+        id: upload-sarif
+        if: ${{ github.event_name != 'pull_request_target' }}
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: sarif.output.json
 ```
 
 # License
