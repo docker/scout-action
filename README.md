@@ -186,6 +186,8 @@ env:
   REGISTRY: docker.io
   IMAGE_NAME: ${{ github.repository }}
   SHA: ${{ github.event.pull_request.head.sha || github.event.after }}
+  # Use `latest` as the tag to compare to if empty, assuming that it's already pushed
+  COMPARE_TAG: latest
 
 jobs:
   build:
@@ -194,7 +196,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      pull-request: write
+      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -251,7 +253,7 @@ jobs:
         with:
           command: compare
           image: ${{ steps.meta.outputs.tags }}
-          to: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:edge
+          to: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.COMPARE_TAG }}
           ignore-unchanged: true
           only-severities: critical,high
           write-comment: true
