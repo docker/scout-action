@@ -46,9 +46,15 @@ inputs:
   to-latest:
     required: false
     description: Compare to latest pushed image
-  to-app:
+
+
+  # stream flags
+  stream:
     required: false
-    description: Name of the application when recording to a stream
+    description: Name of the stream to record the image
+  app:
+    required: false
+    description: Name of the application when recording to a stream. If empty, the name of the repository will be used
 
   # filter flags
   ignore-base:

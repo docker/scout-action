@@ -4,7 +4,7 @@ _Note:_ Docker Scout is a new product and is free while in early access. Read mo
 
 GitHub Action to run the Docker Scout CLI as part of your workflows.
 
-You can pick one of the following command to run:
+You can pick one of the following commands to run:
 
 - `quickview`: get a quick overview of an image, base image and available recommendations
 - `compare`: compare an image to a second one (for instance to `latest`)
@@ -156,15 +156,14 @@ set as an output of the step, using the command name as identifier, and will be 
 To record an image to a stream, some constraints are applied on top of the above common inputs:
 
 - `type` needs to be `image` (or not set)
-- `image` needs to include the digest, so in the form `[registry/]{namespace}/{repository}@sha256:{digest}`
+- `image` needs to be a reference including the repository of the image, so in the form `[registry/]{namespace}/{repository}[@sha256:{digest}|:{tag}]`
 
-| <!-- -->    | <!-- -->     | <!-- -->  | <!-- -->                                    |
-|:------------|:-------------|:----------|:--------------------------------------------|
-| `to-stream` | (*)          | `string`  | Name of the stream to record the image      |
-| `to-latest` | (*)          | `boolean` | Record to latest indexed stream             |
-| `to-app`    | **required** | `string`  | Name of the application to record the image |
+| <!-- --> | <!-- -->     | <!-- -->  | <!-- -->                                                                                               |
+|:---------|:-------------|:----------|:-------------------------------------------------------------------------------------------------------|
+| `stream` | **required** | `string`  | Name of the stream to record the image                                                                 |
+| `app`    |              | `string`  | Name of the application to record the image. If empty, the name of the repository will be used instead |
 
-(*) Either `to-stream` or `to-latest` needs to be set.
+[See Stream example](#record-an-image-deployed-to-a-stream-environment)
 
 ## Example usage
 
@@ -300,6 +299,29 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: sarif.output.json
+```
+
+### Record an image deployed to a stream (Environment)
+
+```yaml
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Docker Scout
+        id: docker-scout-stream
+        uses: docker/scout-action@v0.18.1
+        with:
+          command: stream
+          image: ${{ steps.meta.outputs.tags }}
+          stream: prod
 ```
 
 # License
