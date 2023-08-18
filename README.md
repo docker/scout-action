@@ -57,8 +57,9 @@ You can use the parameters below to authenticate, or you can use the [`docker/lo
 | `registry-user`     | **required** to pull from other private registry | `string` | Registry user id to pull images         |
 | `registry-password` | **required** to pull from other private registry | `string` | Registry password or PAT to pull images |
 
+## Common Inputs
 
-## Common Inputs (Image)
+### Image
 
 | <!-- -->   | <!-- -->                                 | <!-- --> | <!-- -->                                                                                      |
 |:-----------|:-----------------------------------------|:---------|:----------------------------------------------------------------------------------------------|
@@ -68,6 +69,16 @@ You can use the parameters below to authenticate, or you can use the [`docker/lo
 | `ref`      | **optional** default is empty            | `string` | Reference to use if the provided tarball containers multiple images, only with `type=archive` |
 
 (*) If `image` is not set (or empty) the most recently built image, if any, will be used instead.
+
+### Namespace
+
+Docker namespace is required to match the query with the right data. When an image reference is on Docker Hub, then the image's namespace is used (the first part of `namespace/repository`).
+
+If the image is not on Docker Hub, or simply not tagged, the namespace might be required. For instance when using _streams_. In that case, the namespace can be defined with the `namespace` parameter.
+
+| <!-- -->    | <!-- -->                      | <!-- --> | <!-- -->         |
+|:------------|:------------------------------|:---------|:-----------------|
+| `namespace` | **optional** default is empty | `string` | Docker namespace |
 
 ## Step Summary
 
