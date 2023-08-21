@@ -46,18 +46,26 @@ inputs:
   to-stream:
     required: false
     description: Compare to image in stream
+    deprecationMessage: Use to-env instead
+  to-env:
+    required: false
+    description: Compare to image in environment
   to-latest:
     required: false
     description: Compare to latest pushed image
 
 
-  # stream flags
+  # stream/environment flags
   stream:
     required: false
     description: Name of the stream to record the image
+    deprecationMessage: Use environment instead
+  environment:
+    required: false
+    description: Name of the environment to record the image
   app:
     required: false
-    description: Name of the application when recording to a stream. If empty, the name of the repository will be used
+    description: Name of the application when recording to an environment. If empty, the name of the repository will be used
 
   # filter flags
   ignore-base:

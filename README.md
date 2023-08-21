@@ -11,7 +11,8 @@ You can pick one of the following commands to run:
 - `cves`: display vulnerabilities of an image
 - `recommendations`: display available base image updates and remediation recommendations
 - `sbom`: generate the SBOM of the image
-- `stream`: record an image to a stream
+- `environment`: record an image to an environment
+- `stream` (deprecated): record an image to a stream
 
 [![Screenshot](.github/compare_pr_comment.png)](https://github.com/docker/scout-demo-service/pull/2)
 
@@ -21,9 +22,9 @@ You can pick one of the following commands to run:
 
 You can run one or multiple commands in the same GitHub Action run. Use a comma separated list to run several commands.
 
-| <!-- -->   | <!-- -->     | <!-- --> | <!-- -->                                                                                                                                                                                                                     |
-|:-----------|:-------------|:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `command`  | **required** | `string` | Single command to run or comma separated list of commands to run in order.<br/>Possible values:<br/><ul><li>`quickview`</li><li>`compare`</li><li>`cves`</li><li>`recommendations`</li><li>`sbom`</li><li>`stream`</li></ul> |
+| <!-- -->   | <!-- -->     | <!-- --> | <!-- -->                                                                                                                                                                                                                          |
+|:-----------|:-------------|:---------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `command`  | **required** | `string` | Single command to run or comma separated list of commands to run in order.<br/>Possible values:<br/><ul><li>`quickview`</li><li>`compare`</li><li>`cves`</li><li>`recommendations`</li><li>`sbom`</li><li>`environment`</li></ul> |
 
 The commands will be run in the order of the value, and will share the same parameters.
 
@@ -122,14 +123,15 @@ set as an output of the step, using the command name as identifier, and will be 
 | `to-ref`  | **optional** default is empty   | `string` | Reference to use if the provided tarball containers multiple images, only with `to-type=archive` |
 
 
-### Compare to a stream
+### Compare to an environment
 
-| <!-- -->    | <!-- --> | <!-- -->  | <!-- -->                           |
-|:------------|:---------|:----------|:-----------------------------------|
-| `to-stream` | (*)      | `string`  | Name of the stream to compare with |
-| `to-latest` | (*)      | `boolean` | Compare to latest indexed image    |
+| <!-- -->    | <!-- -->           | <!-- -->  | <!-- -->                                |
+|:------------|:-------------------|:----------|:----------------------------------------|
+| `to-env`    | (*)                | `string`  | Name of the environment to compare with |
+| `to-stream` | **deprecated** (*) | `string`  | Name of the stream to compare with      |
+| `to-latest` | (*)                | `boolean` | Compare to latest indexed image         |
 
-(*) One or the other needs to be defined.
+(*) One and only one needs to be defined.
 
 
 ### Common Inputs
@@ -161,8 +163,23 @@ set as an output of the step, using the command name as identifier, and will be 
 | `only-refresh` | **optional** default is `false`  | `boolean` | Only display base image refresh recommendations |
 | `only-update`  | **optional** default is `false`  | `boolean` | Only display base image update recommendations  |
 
+## `environment` Inputs
+
+To record an image to an environment, some constraints are applied on top of the above common inputs:
+
+- `type` needs to be `image` (or not set)
+- `image` needs to be a reference including the repository of the image, so in the form `[registry/]{namespace}/{repository}[@sha256:{digest}|:{tag}]`
+
+| <!-- -->      | <!-- -->     | <!-- -->  | <!-- -->                                                                                               |
+|:--------------|:-------------|:----------|:-------------------------------------------------------------------------------------------------------|
+| `environment` | **required** | `string`  | Name of the environment to record the image                                                            |
+| `app`         |              | `string`  | Name of the application to record the image. If empty, the name of the repository will be used instead |
+
+[See Environment example](#record-an-image-deployed-to-an-environment)
 
 ## `stream` Inputs
+
+**Deprecated**: use `environment`
 
 To record an image to a stream, some constraints are applied on top of the above common inputs:
 
@@ -174,7 +191,6 @@ To record an image to a stream, some constraints are applied on top of the above
 | `stream` | **required** | `string`  | Name of the stream to record the image                                                                 |
 | `app`    |              | `string`  | Name of the application to record the image. If empty, the name of the repository will be used instead |
 
-[See Stream example](#record-an-image-deployed-to-a-stream-environment)
 
 ## Example usage
 
@@ -312,7 +328,7 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
           sarif_file: sarif.output.json
 ```
 
-### Record an image deployed to a stream (Environment)
+### Record an image deployed to an environment
 
 ```yaml
       - name: Build and push Docker image
@@ -327,10 +343,10 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
           cache-to: type=gha,mode=max
 
       - name: Docker Scout
-        id: docker-scout-stream
+        id: docker-scout-environment
         uses: docker/scout-action@v0.18.1
         with:
-          command: stream
+          command: environment
           image: ${{ steps.meta.outputs.tags }}
           stream: prod
 ```
