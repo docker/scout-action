@@ -71,15 +71,15 @@ You can use the parameters below to authenticate, or you can use the [`docker/lo
 
 (*) If `image` is not set (or empty) the most recently built image, if any, will be used instead.
 
-### Namespace
+### Organization namespace
 
-Docker namespace is required to match the query with the right data. When an image reference is on Docker Hub, then the image's namespace is used (the first part of `namespace/repository`).
+Docker Organization namespace is required to match the query with the right data. When an image reference is on Docker Hub, then the image's namespace is used (the first part of `namespace/repository`).
 
-If the image is not on Docker Hub, or simply not tagged, the namespace might be required. For instance when using _streams_. In that case, the namespace can be defined with the `namespace` parameter.
+If the image is not on Docker Hub, or simply not tagged, the namespace might be required. For instance when using _environments_. In that case, the organization namespace can be defined with the `organization` parameter.
 
-| <!-- -->    | <!-- -->                      | <!-- --> | <!-- -->         |
-|:------------|:------------------------------|:---------|:-----------------|
-| `namespace` | **optional** default is empty | `string` | Docker namespace |
+| <!-- -->       | <!-- -->                      | <!-- --> | <!-- -->                      |
+|:---------------|:------------------------------|:---------|:------------------------------|
+| `organization` | **optional** default is empty | `string` | Docker organization namespace |
 
 ## Step Summary
 

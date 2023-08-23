@@ -17,9 +17,9 @@ inputs:
     description: Publish the output as GitHub Action summary
     default: true
 
-  namespace:
+  organization:
     required: false
-    description: Docker namespace
+    description: Docker organization namespace
   image:
     required: false
     description: Image to analyze
