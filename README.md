@@ -348,7 +348,7 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
         with:
           command: environment
           image: ${{ steps.meta.outputs.tags }}
-          stream: prod
+          environment: prod
 ```
 
 # License
