@@ -73,13 +73,13 @@ You can use the parameters below to authenticate, or you can use the [`docker/lo
 
 ### Organization namespace
 
-Docker Organization namespace is required to match the query with the right data. When an image reference is on Docker Hub, then the image's namespace is used (the first part of `namespace/repository`).
+Namespace of the Docker Organization is required to match the query with the right data. When an image reference is on Docker Hub, then the image's namespace is used (the first part of `namespace/repository`).
 
-If the image is not on Docker Hub, or simply not tagged, the namespace might be required. For instance when using _environments_. In that case, the organization namespace can be defined with the `organization` parameter.
+If the image is not on Docker Hub, or simply not tagged, the namespace might be required. For instance when using _environments_. In that case, the namespace of the organization can be defined with the `organization` parameter.
 
-| <!-- -->       | <!-- -->                      | <!-- --> | <!-- -->                      |
-|:---------------|:------------------------------|:---------|:------------------------------|
-| `organization` | **optional** default is empty | `string` | Docker organization namespace |
+| <!-- -->       | <!-- -->                      | <!-- --> | <!-- -->                             |
+|:---------------|:------------------------------|:---------|:-------------------------------------|
+| `organization` | **optional** default is empty | `string` | Namespace of the Docker organization |
 
 ## Step Summary
 

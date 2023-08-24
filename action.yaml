@@ -19,7 +19,7 @@ inputs:
 
   organization:
     required: false
-    description: Docker organization namespace
+    description: Namespace of the Docker organization
   image:
     required: false
     description: Image to analyze
