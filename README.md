@@ -12,7 +12,6 @@ You can pick one of the following commands to run:
 - `recommendations`: display available base image updates and remediation recommendations
 - `sbom`: generate the SBOM of the image
 - `environment`: record an image to an environment
-- `stream` (deprecated): record an image to a stream
 
 [![Screenshot](.github/compare_pr_comment.png)](https://github.com/docker/scout-demo-service/pull/2)
 
@@ -73,13 +72,13 @@ You can use the parameters below to authenticate, or you can use the [`docker/lo
 
 ### Organization namespace
 
-Namespace of the Docker Organization is required to match the query with the right data. When an image reference is on Docker Hub, then the image's namespace is used (the first part of `namespace/repository`).
+Namespace of the Docker Organization is required to match the query with the right data.
 
-If the image is not on Docker Hub, or simply not tagged, the namespace might be required. For instance when using _environments_. In that case, the namespace of the organization can be defined with the `organization` parameter.
+When using _environments_ (for instance to compare an image to the one from a defined environment, or when comparing to the latest indexed) `organization` parameter is required.
 
-| <!-- -->       | <!-- -->                      | <!-- --> | <!-- -->                             |
-|:---------------|:------------------------------|:---------|:-------------------------------------|
-| `organization` | **optional** default is empty | `string` | Namespace of the Docker organization |
+| <!-- -->       | <!-- -->                                                                                                                                      | <!-- --> | <!-- -->                             |
+|:---------------|:----------------------------------------------------------------------------------------------------------------------------------------------|:---------|:-------------------------------------|
+| `organization` | **required** to compare to environments/latest indexed<br/>**required** to manage environments<br/>**optional** in other cases, default empty | `string` | Namespace of the Docker organization |
 
 ## Step Summary
 
@@ -349,6 +348,7 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
           command: environment
           image: ${{ steps.meta.outputs.tags }}
           environment: prod
+          organization: my-docker-org
 ```
 
 # License
