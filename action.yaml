@@ -63,9 +63,6 @@ inputs:
   environment:
     required: false
     description: Name of the environment to record the image
-  app:
-    required: false
-    description: Name of the application when recording to an environment. If empty, the name of the repository will be used
 
   # filter flags
   ignore-base:

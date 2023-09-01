@@ -169,27 +169,11 @@ To record an image to an environment, some constraints are applied on top of the
 - `type` needs to be `image` (or not set)
 - `image` needs to be a reference including the repository of the image, so in the form `[registry/]{namespace}/{repository}[@sha256:{digest}|:{tag}]`
 
-| <!-- -->      | <!-- -->     | <!-- -->  | <!-- -->                                                                                               |
-|:--------------|:-------------|:----------|:-------------------------------------------------------------------------------------------------------|
-| `environment` | **required** | `string`  | Name of the environment to record the image                                                            |
-| `app`         |              | `string`  | Name of the application to record the image. If empty, the name of the repository will be used instead |
+| <!-- -->      | <!-- -->     | <!-- -->  | <!-- -->                                    |
+|:--------------|:-------------|:----------|:--------------------------------------------|
+| `environment` | **required** | `string`  | Name of the environment to record the image |
 
 [See Environment example](#record-an-image-deployed-to-an-environment)
-
-## `stream` Inputs
-
-**Deprecated**: use `environment`
-
-To record an image to a stream, some constraints are applied on top of the above common inputs:
-
-- `type` needs to be `image` (or not set)
-- `image` needs to be a reference including the repository of the image, so in the form `[registry/]{namespace}/{repository}[@sha256:{digest}|:{tag}]`
-
-| <!-- --> | <!-- -->     | <!-- -->  | <!-- -->                                                                                               |
-|:---------|:-------------|:----------|:-------------------------------------------------------------------------------------------------------|
-| `stream` | **required** | `string`  | Name of the stream to record the image                                                                 |
-| `app`    |              | `string`  | Name of the application to record the image. If empty, the name of the repository will be used instead |
-
 
 ## Example usage
 
