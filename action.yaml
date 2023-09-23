@@ -26,9 +26,6 @@ inputs:
   platform:
     required: false
     description: Platform of the image to analyze
-  type:
-    required: false
-    description: Type of image
   ref:
     required: false
     description: Ref if needed
@@ -37,9 +34,6 @@ inputs:
   to:
     required: false
     description: Image to compare to
-  to-type:
-    required: false
-    description: Type of image to compare
   to-ref:
     required: false
     description: Ref of image to compare
@@ -54,7 +48,6 @@ inputs:
     required: false
     description: Compare to latest pushed image
 
-
   # stream/environment flags
   stream:
     required: false
@@ -63,6 +56,11 @@ inputs:
   environment:
     required: false
     description: Name of the environment to record the image
+
+  # policy flags
+  timeout:
+    required: false
+    description: Maximum time to wait for the policy results to be available
 
   # filter flags
   ignore-base:
@@ -102,10 +100,10 @@ inputs:
     description: Docker Hub PAT
 
   # credentials needed to pull private images
-  registry-user: 
+  registry-user:
     description: Registry user to pull images
     required: false
-  registry-password: 
+  registry-password:
     description: Registry password to pull images
     required: false
 
