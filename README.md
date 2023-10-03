@@ -1,3 +1,5 @@
+_Note:_ Docker Scout is a new product and is free while in early access. Read more about [Docker Scout](https://www.docker.com/products/docker-scout?utm_source=hub&utm_content=scout-action-readme).
+
 # About
 
 GitHub Action to run the Docker Scout CLI as part of your workflows.

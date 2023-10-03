@@ -58,9 +58,9 @@ inputs:
     description: Name of the environment to record the image
 
   # policy flags
-  timeout:
+  hide-policies:
     required: false
-    description: Maximum time to wait for the policy results to be available
+    description: Hide policies from the output altogether
 
   # filter flags
   ignore-base:
