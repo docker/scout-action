@@ -272,7 +272,7 @@ jobs:
       - name: Docker Scout
         id: docker-scout
         if: ${{ github.event_name == 'pull_request' }}
-        uses: docker/scout-action@v0.18.1
+        uses: docker/scout-action@v1
         with:
           command: compare
           image: ${{ steps.meta.outputs.tags }}
@@ -293,7 +293,7 @@ For the latest built image, display:
 ```yaml
         - name: Docker Scout
           id: docker-scout
-          uses: docker/scout-action@v0.18
+          uses: docker/scout-action@v1
           with:
             command: cves,recommendations,compare
             to-latest: true
@@ -310,7 +310,7 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
       - name: Analyze for critical and high CVEs
         id: docker-scout-cves
         if: ${{ github.event_name != 'pull_request_target' }}
-        uses: docker/scout-action@v0.18
+        uses: docker/scout-action@v1
         with:
           command: cves
           image: ${{ steps.meta.outputs.tags }}
@@ -341,7 +341,7 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
 
       - name: Docker Scout
         id: docker-scout-environment
-        uses: docker/scout-action@v0.18.1
+        uses: docker/scout-action@v1
         with:
           command: environment
           image: ${{ steps.meta.outputs.tags }}
