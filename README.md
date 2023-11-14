@@ -146,14 +146,15 @@ See [Prefix](#prefix) above about the available prefixes for the `to` argument.
 
 ### Common Inputs
 
-| <!-- -->             | <!-- -->                                       | <!-- -->  | <!-- -->                                                                                                  |
-|:---------------------|:-----------------------------------------------|:----------|:----------------------------------------------------------------------------------------------------------|
-| `ignore-unchanged`   | **optional** default is `false`                | `boolean` | Filter out unchanged packages                                                                             |
-| `only-severities`    | **optional** default is empty (all severities) | `string`  | Comma separated list of severities (`critical`, `high`, `medium`, `low`, `unspecified`) to filter CVEs by |
-| `only-package-types` | **optional** default is empty (all types)      | `string`  | Comma separated list of package types (like `apk`, `deb`, `rpm`, `npm`, `pypi`, `golang`, etc)            |
-| `only-fixed`         | **optional** default is `false`                | `boolean` | Filter to fixable CVEs                                                                                    |
-| `only-unfixed`       | **optional** default is `false`                | `boolean` | Filter to unfixed CVEs                                                                                    |
-| `exit-code`          | **optional** default is `false`                | `boolean` | Return exit code `2` if vulnerability changes are detected                                                |
+| <!-- -->             | <!-- -->                                       | <!-- -->  | <!-- -->                                                                                                                      |
+|:---------------------|:-----------------------------------------------|:----------|:------------------------------------------------------------------------------------------------------------------------------|
+| `ignore-unchanged`   | **optional** default is `false`                | `boolean` | Filter out unchanged packages                                                                                                 |
+| `only-severities`    | **optional** default is empty (all severities) | `string`  | Comma separated list of severities (`critical`, `high`, `medium`, `low`, `unspecified`) to filter CVEs by                     |
+| `only-package-types` | **optional** default is empty (all types)      | `string`  | Comma separated list of package types (like `apk`, `deb`, `rpm`, `npm`, `pypi`, `golang`, etc)                                |
+| `only-fixed`         | **optional** default is `false`                | `boolean` | Filter to fixable CVEs                                                                                                        |
+| `only-unfixed`       | **optional** default is `false`                | `boolean` | Filter to unfixed CVEs                                                                                                        |
+| `exit-code`          | **optional** default is `false`                | `boolean` | Return exit code `2` if vulnerability changes are detected                                                                    |
+| `exit-on`            | **optional** default is empty                  | `string`  | "(`compare` only) Comma separated list of conditions to fail the action step if worsened, options are: vulnerability, policy" |
 
 ## `cves` Inputs
 

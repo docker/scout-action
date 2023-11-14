@@ -12,6 +12,9 @@ inputs:
   debug:
     required: false
     description: Debug
+  verbose-debug:
+    required: false
+    description: Print more verbose debug messages
   summary:
     required: false
     description: Publish the output as GitHub Action summary
@@ -86,7 +89,10 @@ inputs:
     description: Comma separated list of package types (like apk, deb, rpm, npm, pypi, golang, etc)
   exit-code:
     required: false
-    description: Return exit code '2' if vulnerability changes are detected
+    description: Fail the action step if vulnerability changes are detected
+  exit-on:
+    required: false
+    description:  "(compare only) Comma separated list of conditions to fail the action step if worsened, options are: vulnerability, policy"
 
   sarif-file:
     required: false
