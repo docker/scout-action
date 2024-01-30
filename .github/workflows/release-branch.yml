@@ -21,17 +21,33 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PAT }}
-      - uses: docker/scout-action@${{ github.head_ref }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build
+        uses: docker/build-push-action@v5
+        with:
+          context: https://github.com/docker/scout-demo-service.git#fix-all-cves
+          push: false
+          load: true
+          tags: docker/scout-demo-service:fix
+      - name: TEST quickview no image
+        uses: ./
+        with:
+          command: quickview
+      - name: TEST quickview
+        uses: ./
         with:
           command: quickview
           image: docker/scout-demo-service:main
-      - uses: docker/scout-action@${{ github.head_ref }}
+      - name: TEST cves
+        uses: ./
         with:
           command: cves
           image: docker/scout-demo-service:main
-      - run: |
-          docker pull docker/scout-demo-service:fix
-      - uses: docker/scout-action@${{ github.head_ref }}
+      - name: TEST compare images
+        uses: ./
         with:
           command: compare
           image: registry://docker/scout-demo-service:main
