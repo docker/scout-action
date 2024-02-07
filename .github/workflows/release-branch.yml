@@ -73,6 +73,13 @@ jobs:
           source: ${{ github.head_ref }}
           find: 'release/'
           replace: ''
+      - name: Major version
+        uses: ashley-taylor/regex-property-action@v1.3
+        id: major
+        with:
+          value: ${{ steps.tagname.outputs.value }}
+          regex: "\\.\\d+\\.\\d+$"
+          replacement: ''
       - name: Merge and Tag
         run: |
           git config --unset-all http.https://github.com/.extraheader
@@ -81,3 +88,5 @@ jobs:
           git merge --ff-only origin/${{ github.head_ref }}
           git tag ${{ steps.tagname.outputs.value }}
           git push https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main --tags
+          git tag -f ${{ steps.major.outputs.value }}
+          git push https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main -f --tags
