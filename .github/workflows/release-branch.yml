@@ -36,16 +36,19 @@ jobs:
         uses: ./
         with:
           command: quickview
+          write-comment: false
       - name: TEST quickview
         uses: ./
         with:
           command: quickview
           image: docker/scout-demo-service:main
+          write-comment: false
       - name: TEST cves
         uses: ./
         with:
           command: cves
           image: docker/scout-demo-service:main
+          write-comment: false
       - name: TEST compare images
         uses: ./
         with:
@@ -53,6 +56,7 @@ jobs:
           image: registry://docker/scout-demo-service:main
           to: local://docker/scout-demo-service:fix
           exit-code: false
+          write-comment: false
 
   release:
     if:  startsWith(github.head_ref, 'release/v')
