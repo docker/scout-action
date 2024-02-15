@@ -36,16 +36,19 @@ jobs:
         uses: ./
         with:
           command: quickview
+          write-comment: false
       - name: TEST quickview
         uses: ./
         with:
           command: quickview
           image: docker/scout-demo-service:main
+          write-comment: false
       - name: TEST cves
         uses: ./
         with:
           command: cves
           image: docker/scout-demo-service:main
+          write-comment: false
       - name: TEST compare images
         uses: ./
         with:
@@ -53,11 +56,14 @@ jobs:
           image: registry://docker/scout-demo-service:main
           to: local://docker/scout-demo-service:fix
           exit-code: false
+          write-comment: false
 
   release:
     if:  startsWith(github.head_ref, 'release/v')
     permissions:
       contents: write
+    outputs:
+      tag: ${{ steps.tagname.outputs.value }}
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -65,7 +71,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: main
       - name: Tag name
         uses: mad9000/actions-find-and-replace-string@2
         id: tagname
@@ -73,6 +78,13 @@ jobs:
           source: ${{ github.head_ref }}
           find: 'release/'
           replace: ''
+      - name: Major version
+        uses: ashley-taylor/regex-property-action@v1.3
+        id: major
+        with:
+          value: ${{ steps.tagname.outputs.value }}
+          regex: "\\.\\d+\\.\\d+$"
+          replacement: ''
       - name: Merge and Tag
         run: |
           git config --unset-all http.https://github.com/.extraheader
@@ -81,3 +93,14 @@ jobs:
           git merge --ff-only origin/${{ github.head_ref }}
           git tag ${{ steps.tagname.outputs.value }}
           git push https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main --tags
+          git tag -f ${{ steps.major.outputs.value }}
+          git push https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main -f --tags
+
+  create_release:
+    needs:
+      - release
+    uses: ./.github/workflows/release.yml
+    permissions:
+      contents: write
+    with:
+      tag: ${{ needs.release.outputs.tag }}
