@@ -98,6 +98,15 @@ inputs:
     required: false
     description: Write output to a SARIF file for further processing or upload into GitHub code scanning
 
+  # sbom flags
+  format:
+    required: false
+    description: Format of the SBOM to generate (json, list, spdx)
+    default: json
+  output:
+    required: false
+    description: Output file for the SBOM
+
   dockerhub-user:
     required: false
     description: Docker Hub User
