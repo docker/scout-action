@@ -107,6 +107,14 @@ inputs:
     required: false
     description: Output file for the SBOM
 
+  # attestation add flags
+  file:
+    required: false
+    description: File path to the attestation file
+  predicate-type:
+    required: false
+    description: Predicate type of the attestation
+
   dockerhub-user:
     required: false
     description: Docker Hub User
