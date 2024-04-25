@@ -199,6 +199,13 @@ The following prefixes are supported:
 
 [See Environment example](#record-an-image-deployed-to-an-environment)
 
+## `attestation-add` Inputs
+
+| <!-- -->         | <!-- -->                      | <!-- --> | <!-- -->                          |
+|:-----------------|:------------------------------|:---------|:----------------------------------|
+| `file`           | **optional** default is empty | `string` | File path to the attestation file |
+| `predicate-type` | **optional** default is empty | `string` | Predicate type of the attestation |
+
 ## Example usage
 
 ### Build an image, push and compare
