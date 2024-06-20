@@ -10,6 +10,7 @@ You can pick one of the following commands to run:
 - `recommendations`: display available base image updates and remediation recommendations
 - `sbom`: generate the SBOM of the image
 - `environment`: record an image to an environment
+- `attestation-add`: add attestation to an existing image
 
 [![Screenshot](.github/compare_pr_comment.png)](https://github.com/docker/scout-demo-service/pull/2)
 
