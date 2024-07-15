@@ -87,6 +87,9 @@ inputs:
   only-package-types:
     required: false
     description: Comma separated list of package types (like apk, deb, rpm, npm, pypi, golang, etc)
+  only-cisa-kev:
+    required: false
+    description: Filter to CVEs listed in the CISA Known Exploited Vulnerabilities catalog
   exit-code:
     required: false
     description: Fail the action step if vulnerability changes are detected
