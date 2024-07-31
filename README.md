@@ -40,7 +40,7 @@ to-latest: true
 
 To use `scout` features you need to be authenticated against Docker Hub.
 
-You can use the parameters below to authenticate, or you can use the [`docker/login-action`](https://github.com/docker/login-action). 
+You can use the parameters below to authenticate, or you can use the [`docker/login-action`](https://github.com/docker/login-action).
 
 | <!-- -->             | <!-- -->     | <!-- --> | <!-- -->                   |
 |:---------------------|:-------------|:---------|:---------------------------|
@@ -169,6 +169,9 @@ See [Prefix](#prefix) above about the available prefixes for the `to` argument.
 | `only-unfixed`       | **optional** default is `false`                | `boolean` | Filter to unfixed CVEs                                                                                    |
 | `ignore-base`        | **optional** default is `false`                | `boolean` | Ignore base image vulnerabilities                                                                         |
 | `sarif-file`         | **optional** default is empty (no output file) | `string`  | Write output to a SARIF file for further processing or upload into GitHub code scanning                   |
+| `only-vex-affected`      | **optional** default is `false`                | `boolean` | Filter out CVEs that are marked not affected by a VEX statement                                                     |
+| `vex-author` | **optional** default is empty | `string`  | File location of directory or file containing VEX statement                                |
+| `vex-location` | **optional** default is empty | `string`  | List of VEX statement authors to accept                                |
 
 ## `sbom` Inputs
 
@@ -222,7 +225,7 @@ on:
       - 'main'
   pull_request:
     branches: [ "**" ]
-    
+
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: docker.io
@@ -245,7 +248,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ env.SHA }}
-          
+
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2.5.0
         with:
@@ -274,7 +277,7 @@ jobs:
             type=edge,branch=$repo.default_branch
             type=semver,pattern=v{{version}}
             type=sha,prefix=,suffix=,format=short
-      
+
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
@@ -287,7 +290,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      
+
       - name: Docker Scout
         id: docker-scout
         if: ${{ github.event_name == 'pull_request' }}
@@ -300,7 +303,7 @@ jobs:
           only-severities: critical,high
           write-comment: true
           github-token: ${{ secrets.GITHUB_TOKEN }} # to be able to write the comment
-```  
+```
 
 ### All-in-one
 
@@ -335,7 +338,7 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
           image: ${{ steps.meta.outputs.tags }}
           sarif-file: sarif.output.json
           summary: true
-      
+
       - name: Upload SARIF result
         id: upload-sarif
         if: ${{ github.event_name != 'pull_request_target' }}
