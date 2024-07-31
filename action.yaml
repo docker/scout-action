@@ -72,9 +72,15 @@ inputs:
   ignore-unchanged:
     required: false
     description: Filter out unchanged packages
-  ignore-vex:
+  only-vex-affected:
     required: false
     description: Filter out CVEs that are marked not affected by a VEX statement
+  vex-author:
+    required: false
+    description: List of VEX statement authors to accept
+  vex-location:
+    required: false
+    description: File location of directory or file containing VEX statement
   only-fixed:
     required: false
     description: Filter to fixable CVEs
@@ -95,7 +101,7 @@ inputs:
     description: Fail the action step if vulnerability changes are detected
   exit-on:
     required: false
-    description:  "(compare only) Comma separated list of conditions to fail the action step if worsened, options are: vulnerability, policy"
+    description: "(compare only) Comma separated list of conditions to fail the action step if worsened, options are: vulnerability, policy"
 
   sarif-file:
     required: false
