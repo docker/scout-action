@@ -110,7 +110,7 @@ inputs:
   # sbom flags
   format:
     required: false
-    description: Format of the SBOM to generate (json, list, spdx)
+    description: Format of the SBOM to generate (json, list, spdx, cyclonedx)
     default: json
   output:
     required: false

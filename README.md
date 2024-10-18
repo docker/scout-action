@@ -175,10 +175,10 @@ See [Prefix](#prefix) above about the available prefixes for the `to` argument.
 
 ## `sbom` Inputs
 
-| <!-- --> | <!-- -->                       | <!-- --> | <!-- -->                                                |
-|:---------|:-------------------------------|:---------|:--------------------------------------------------------|
-| `format` | **optional** default is `json` | `string` | Format of the SBOM to generate (`json`, `list`, `spdx`) |
-| `output` | **optional** default is empty  | `string` | Path of the output file to write the SBOM               |
+| <!-- --> | <!-- -->                       | <!-- --> | <!-- -->                                                             |
+|:---------|:-------------------------------|:---------|:---------------------------------------------------------------------|
+| `format` | **optional** default is `json` | `string` | Format of the SBOM to generate (`json`, `list`, `spdx`, `cyclonedx`) |
+| `output` | **optional** default is empty  | `string` | Path of the output file to write the SBOM                            |
 
 
 ## `recommendations` Inputs
