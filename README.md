@@ -170,8 +170,8 @@ See [Prefix](#prefix) above about the available prefixes for the `to` argument.
 | `ignore-base`        | **optional** default is `false`                | `boolean` | Ignore base image vulnerabilities                                                                         |
 | `sarif-file`         | **optional** default is empty (no output file) | `string`  | Write output to a SARIF file for further processing or upload into GitHub code scanning                   |
 | `only-vex-affected`      | **optional** default is `false`                | `boolean` | Filter out CVEs that are marked not affected by a VEX statement                                                     |
-| `vex-author` | **optional** default is empty | `string`  | File location of directory or file containing VEX statement                                |
-| `vex-location` | **optional** default is empty | `string`  | List of VEX statement authors to accept                                |
+| `vex-author` | **optional** default is empty | `string`  | List of VEX statement authors to accept                                |
+| `vex-location` | **optional** default is empty | `string`  | File location of directory or file containing VEX statement                                |
 
 ## `sbom` Inputs
 
