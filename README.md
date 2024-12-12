@@ -253,7 +253,7 @@ jobs:
         uses: docker/setup-buildx-action@v3.7.1
         with:
           driver-opts: |
-            image=moby/buildkit:v0.17.2
+            image=moby/buildkit:v0.18.1
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -282,7 +282,7 @@ jobs:
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         id: build-and-push
-        uses: docker/build-push-action@v6.9.0
+        uses: docker/build-push-action@v6.10.0
         with:
           context: .
           push: true
@@ -352,7 +352,7 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
 ```yaml
       - name: Build and push Docker image
         id: build-and-push
-        uses: docker/build-push-action@v6.9.0
+        uses: docker/build-push-action@v6.10.0
         with:
           context: .
           push: true
