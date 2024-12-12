@@ -206,13 +206,15 @@ The following prefixes are supported:
 
 ## `attestation-add` Inputs
 
-| <!-- -->         | <!-- -->                      | <!-- --> | <!-- -->                          |
-|:-----------------|:------------------------------|:---------|:----------------------------------|
-| `file`           | **optional** default is empty | `string` | File path to the attestation file |
-| `predicate-type` | **optional** default is empty | `string` | Predicate type of the attestation |
+| <!-- -->         | <!-- -->                      | <!-- -->  | <!-- -->                            |
+|:-----------------|:------------------------------|:----------|:------------------------------------|
+| `tags`           | **optional** default is empty | `string`  | Additional tags for the attestation |
+| `file`           | **optional** default is empty | `string`  | File path to the attestation file   |
+| `predicate-type` | **optional** default is empty | `string`  | Predicate type of the attestation   |
+| `referrer`       | **optional** default is false | `boolean` | Store attestations in Docker Scout  |
 
 ## Example usage
-
+    
 ### Build an image, push and compare
 
 ```yaml

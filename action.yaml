@@ -117,12 +117,26 @@ inputs:
     description: Output file for the SBOM
 
   # attestation add flags
+  tags:
+    required: false
+    description: List of tags to add to the attestation
   file:
     required: false
     description: File path to the attestation file
   predicate-type:
     required: false
     description: Predicate type of the attestation
+  referrer:
+    required: false
+    description: Enable OCI referrer API for pushing attestation
+    default: false
+  # credentials needed to push images
+  registry-write-user:
+    description: Registry user to push attestations
+    required: false
+  registry-write-password:
+    description: Registry password to push attestations
+    required: false
 
   dockerhub-user:
     required: false
