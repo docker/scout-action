@@ -115,6 +115,9 @@ inputs:
   output:
     required: false
     description: Output file for the SBOM
+  secrets:
+    required: false
+    description: Enable secret scanning as part of SBOM indexing
 
   # attestation add flags
   tags:
