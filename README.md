@@ -20,13 +20,14 @@ You can pick one of the following commands to run:
 
 You can run one or multiple commands in the same GitHub Action run. Use a comma separated list to run several commands.
 
-| <!-- -->   | <!-- -->     | <!-- --> | <!-- -->                                                                                                                                                                                                                          |
-|:-----------|:-------------|:---------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `command`  | **required** | `string` | Single command to run or comma separated list of commands to run in order.<br/>Possible values:<br/><ul><li>`quickview`</li><li>`compare`</li><li>`cves`</li><li>`recommendations`</li><li>`sbom`</li><li>`environment`</li></ul> |
+| <!-- -->  | <!-- -->     | <!-- --> | <!-- -->                                                                                                                                                                                                                          |
+|:----------|:-------------|:---------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `command` | **required** | `string` | Single command to run or comma separated list of commands to run in order.<br/>Possible values:<br/><ul><li>`quickview`</li><li>`compare`</li><li>`cves`</li><li>`recommendations`</li><li>`sbom`</li><li>`environment`</li></ul> |
 
 The commands will be run in the order of the value, and will share the same parameters.
 
-For instance, if you built an image and want to display a `quickview` as well as to `compare` it against the latest indexed one, set the action as following:
+For instance, if you built an image and want to display a `quickview` as well as to `compare` it against the latest
+indexed one, set the action as following:
 
 ```yaml
 command: quickview,compare
@@ -40,16 +41,15 @@ to-latest: true
 
 To use `scout` features you need to be authenticated against Docker Hub.
 
-You can use the parameters below to authenticate, or you can use the [`docker/login-action`](https://github.com/docker/login-action).
+You can use the parameters below to authenticate, or you can use the [
+`docker/login-action`](https://github.com/docker/login-action).
 
 | <!-- -->             | <!-- -->     | <!-- --> | <!-- -->                   |
 |:---------------------|:-------------|:---------|:---------------------------|
 | `dockerhub-user`     | **optional** | `string` | Docker Hub user id         |
 | `dockerhub-password` | **optional** | `string` | Docker Hub password or PAT |
 
-
 ### Login to a registry to pull private images (non Docker Hub)
-
 
 | <!-- -->            | <!-- -->                                         | <!-- --> | <!-- -->                                |
 |:--------------------|:-------------------------------------------------|:---------|:----------------------------------------|
@@ -75,7 +75,8 @@ If no prefix is set, the `image://` prefix is used.
 
 Available prefixes:
 
-- `image://`: optional prefix, the target is an image that first will be resolved locally then, if not found, will be resolved to the associated registry
+- `image://`: optional prefix, the target is an image that first will be resolved locally then, if not found, will be
+  resolved to the associated registry
 - `local://`: only resolve the image from the local image store
 - `registry://`: do not use the local image store, only use the registry
 - `oci-dir://`: local directory to be read as an OCI directory
@@ -87,7 +88,8 @@ Available prefixes:
 
 Namespace of the Docker Organization is required to match the query with the right data.
 
-When using _environments_ (for instance to compare an image to the one from a defined environment, or when comparing to the latest indexed) `organization` parameter is required.
+When using _environments_ (for instance to compare an image to the one from a defined environment, or when comparing to
+the latest indexed) `organization` parameter is required.
 
 | <!-- -->       | <!-- -->                                                                                                                                      | <!-- --> | <!-- -->                             |
 |:---------------|:----------------------------------------------------------------------------------------------------------------------------------------------|:---------|:-------------------------------------|
@@ -95,7 +97,8 @@ When using _environments_ (for instance to compare an image to the one from a de
 
 ## Step Summary
 
-By default the Markdown output of the command (if supported) will be displayed as a [Job Summary](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/).
+By default the Markdown output of the command (if supported) will be displayed as
+a [Job Summary](https://github.blog/2022-05-09-supercharging-github-actions-with-job-summaries/).
 This can be disabled if needed.
 
 | <!-- -->  | <!-- -->                       | <!-- -->  | <!-- -->                      |
@@ -121,17 +124,19 @@ If you prefer to keep previous comments but hide them, set the `keep-previous-co
 
 ## Output
 
-The text version of the command output will be displayed in the logs. The markdown version (if exists) of the command output will be
-set as an output of the step, using the command name as identifier, and will be displayed as Pull Request comment or Step Summary.
+The text version of the command output will be displayed in the logs. The markdown version (if exists) of the command
+output will be
+set as an output of the step, using the command name as identifier, and will be displayed as Pull Request comment or
+Step Summary.
 
 ## `compare` Inputs
 
 ### Compare to an image
 
-| <!-- -->  | <!-- -->                        | <!-- --> | <!-- -->                                                                                |
-|:----------|:--------------------------------|:---------|:----------------------------------------------------------------------------------------|
-| `to`      | **required**                    | `string` | Prefixed name of the image, directory or archive to compare with                        |
-| `to-ref`  | **optional** default is empty   | `string` | Reference to use if the provided tarball containers multiple images, only with archives |
+| <!-- --> | <!-- -->                      | <!-- --> | <!-- -->                                                                                |
+|:---------|:------------------------------|:---------|:----------------------------------------------------------------------------------------|
+| `to`     | **required**                  | `string` | Prefixed name of the image, directory or archive to compare with                        |
+| `to-ref` | **optional** default is empty | `string` | Reference to use if the provided tarball containers multiple images, only with archives |
 
 See [Prefix](#prefix) above about the available prefixes for the `to` argument.
 
@@ -144,7 +149,6 @@ See [Prefix](#prefix) above about the available prefixes for the `to` argument.
 | `to-latest` | (*)                | `boolean` | Compare to latest indexed image         |
 
 (*) One and only one needs to be defined.
-
 
 ### Common Inputs
 
@@ -169,24 +173,24 @@ See [Prefix](#prefix) above about the available prefixes for the `to` argument.
 | `only-unfixed`       | **optional** default is `false`                | `boolean` | Filter to unfixed CVEs                                                                                    |
 | `ignore-base`        | **optional** default is `false`                | `boolean` | Ignore base image vulnerabilities                                                                         |
 | `sarif-file`         | **optional** default is empty (no output file) | `string`  | Write output to a SARIF file for further processing or upload into GitHub code scanning                   |
-| `only-vex-affected`      | **optional** default is `false`                | `boolean` | Filter out CVEs that are marked not affected by a VEX statement                                                     |
-| `vex-author` | **optional** default is empty | `string`  | File location of directory or file containing VEX statement                                |
-| `vex-location` | **optional** default is empty | `string`  | List of VEX statement authors to accept                                |
+| `only-vex-affected`  | **optional** default is `false`                | `boolean` | Filter out CVEs that are marked not affected by a VEX statement                                           |
+| `vex-author`         | **optional** default is empty                  | `string`  | List of VEX statement authors to accept                                                                   |
+| `vex-location`       | **optional** default is empty                  | `string`  | File location of directory or file containing VEX statement                                               |
 
 ## `sbom` Inputs
 
-| <!-- --> | <!-- -->                       | <!-- --> | <!-- -->                                                             |
-|:---------|:-------------------------------|:---------|:---------------------------------------------------------------------|
-| `format` | **optional** default is `json` | `string` | Format of the SBOM to generate (`json`, `list`, `spdx`, `cyclonedx`) |
-| `output` | **optional** default is empty  | `string` | Path of the output file to write the SBOM                            |
-
+| <!-- -->  | <!-- -->                        | <!-- -->  | <!-- -->                                                             |
+|:----------|:--------------------------------|:----------|:---------------------------------------------------------------------|
+| `format`  | **optional** default is `json`  | `string`  | Format of the SBOM to generate (`json`, `list`, `spdx`, `cyclonedx`) |
+| `output`  | **optional** default is empty   | `string`  | Path of the output file to write the SBOM                            |
+| `secrets` | **optional** default is `false` | `boolean` | Path of the output file to write the SBOM                            |
 
 ## `recommendations` Inputs
 
-| <!-- -->       | <!-- -->                         | <!-- -->  | <!-- -->                                        |
-|:---------------|:---------------------------------|:----------|:------------------------------------------------|
-| `only-refresh` | **optional** default is `false`  | `boolean` | Only display base image refresh recommendations |
-| `only-update`  | **optional** default is `false`  | `boolean` | Only display base image update recommendations  |
+| <!-- -->       | <!-- -->                        | <!-- -->  | <!-- -->                                        |
+|:---------------|:--------------------------------|:----------|:------------------------------------------------|
+| `only-refresh` | **optional** default is `false` | `boolean` | Only display base image refresh recommendations |
+| `only-update`  | **optional** default is `false` | `boolean` | Only display base image update recommendations  |
 
 ## `environment` Inputs
 
@@ -198,23 +202,23 @@ The following prefixes are supported:
 - `local://`
 - `registry://`
 
-| <!-- -->      | <!-- -->     | <!-- -->  | <!-- -->                                    |
-|:--------------|:-------------|:----------|:--------------------------------------------|
-| `environment` | **required** | `string`  | Name of the environment to record the image |
+| <!-- -->      | <!-- -->     | <!-- --> | <!-- -->                                    |
+|:--------------|:-------------|:---------|:--------------------------------------------|
+| `environment` | **required** | `string` | Name of the environment to record the image |
 
 [See Environment example](#record-an-image-deployed-to-an-environment)
 
 ## `attestation-add` Inputs
 
-| <!-- -->         | <!-- -->                      | <!-- -->  | <!-- -->                            |
-|:-----------------|:------------------------------|:----------|:------------------------------------|
-| `tags`           | **optional** default is empty | `string`  | Additional tags for the attestation |
-| `file`           | **optional** default is empty | `string`  | File path to the attestation file   |
-| `predicate-type` | **optional** default is empty | `string`  | Predicate type of the attestation   |
-| `referrer`       | **optional** default is false | `boolean` | Store attestations in Docker Scout  |
+| <!-- -->         | <!-- -->                        | <!-- -->  | <!-- -->                            |
+|:-----------------|:--------------------------------|:----------|:------------------------------------|
+| `tags`           | **optional** default is empty   | `string`  | Additional tags for the attestation |
+| `file`           | **optional** default is empty   | `string`  | File path to the attestation file   |
+| `predicate-type` | **optional** default is empty   | `string`  | Predicate type of the attestation   |
+| `referrer`       | **optional** default is `false` | `boolean` | Store attestations in Docker Scout  |
 
 ## Example usage
-    
+
 ### Build an image, push and compare
 
 ```yaml
@@ -310,9 +314,11 @@ jobs:
 ### All-in-one
 
 For the latest built image, display:
+
 - the vulnerabilities (ignoring the base image, only displaying vulnerabilities with a fix available)
 - the available recommendations
-- compare it to the latest image indexed for the same repository (only displaying unchanged packages and vulnerabilities that already have a fix)
+- compare it to the latest image indexed for the same repository (only displaying unchanged packages and vulnerabilities
+  that already have a fix)
 
 ```yaml
         - name: Docker Scout
@@ -375,4 +381,5 @@ When GitHub code scanning is enabled, the `sarif-file` input can be used to uplo
 
 # License
 
-The Docker Scout CLI is licensed under the Terms and Conditions of the [Docker Subscription Service Agreement](https://www.docker.com/legal/docker-subscription-service-agreement/).
+The Docker Scout CLI is licensed under the Terms and Conditions of
+the [Docker Subscription Service Agreement](https://www.docker.com/legal/docker-subscription-service-agreement/).
