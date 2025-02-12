@@ -131,8 +131,10 @@ inputs:
     description: Predicate type of the attestation
   referrer:
     required: false
-    description: Enable OCI referrer API for pushing attestation
-    default: false
+    description: Use OCI referrer API for pushing attestation
+  referrer-repository:
+    required: false
+    description: Repository to push referrer to
   # credentials needed to push images
   registry-write-user:
     description: Registry user to push attestations
