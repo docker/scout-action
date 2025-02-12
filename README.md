@@ -210,12 +210,13 @@ The following prefixes are supported:
 
 ## `attestation-add` Inputs
 
-| <!-- -->         | <!-- -->                        | <!-- -->  | <!-- -->                            |
-|:-----------------|:--------------------------------|:----------|:------------------------------------|
-| `tags`           | **optional** default is empty   | `string`  | Additional tags for the attestation |
-| `file`           | **optional** default is empty   | `string`  | File path to the attestation file   |
-| `predicate-type` | **optional** default is empty   | `string`  | Predicate type of the attestation   |
-| `referrer`       | **optional** default is `false` | `boolean` | Store attestations in Docker Scout  |
+| <!-- -->              | <!-- -->                                            | <!-- -->  | <!-- -->                                     |
+|:----------------------|:----------------------------------------------------|:----------|:---------------------------------------------|
+| `tags`                | **optional** default is empty                       | `string`  | Additional tags for the attestation          |
+| `file`                | **optional** default is empty                       | `string`  | File path to the attestation file            |
+| `predicate-type`      | **optional** default is empty                       | `string`  | Predicate type of the attestation            |
+| `referrer`            | **optional** default is `false`                     | `boolean` | Use OCI referrer API for pushing attestation |
+| `referrer-repository` | **optional** default is `registry.scout.docker.com` | `string`  | Repository to push referrer to               |
 
 ## Example usage
 
