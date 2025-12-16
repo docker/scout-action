@@ -1,0 +1,62 @@
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+name: 'Install Docker Scout'
+description: 'Install docker scout CLI'
+
+inputs:
+  digest:
+    description: digest
+    required: true
+
+runs:
+  using: composite
+  steps:
+    -
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+      id: run
+      with:
+        script: |
+          const fs = require('fs');
+          const os = require('os');
+          const path = require('path');
+
+          await core.group(`Pull docker/scout-cli image`, async () => {
+            await exec.exec(`docker pull docker.io/docker/scout-cli@${{ inputs.digest }}`);
+          });
+
+          await core.group(`Copy binary`, async () => {
+            const res = await exec.getExecOutput('docker', ['create', 'docker.io/docker/scout-cli@${{ inputs.digest }}'], {
+              ignoreReturnCode: true
+            });
+            if (res.stderr.length > 0 && res.exitCode != 0) {
+              throw new Error(res.stderr);
+            }
+            const ctnid = res.stdout.trim();
+            const dockerCfgPath = process.env.DOCKER_CONFIG || path.join(os.homedir(), '.docker');
+            const pluginsPath = path.join(dockerCfgPath, 'cli-plugins');
+            fs.mkdirSync(pluginsPath, {recursive: true});
+            await exec.exec(`docker cp ${ctnid}:/docker-scout ${pluginsPath}`);
+            await exec.exec(`docker rm -v ${ctnid}`);
+          });
+
+          await core.group(`Docker info`, async () => {
+            await exec.exec(`docker info`);
+          });
+
+          let version;
+          await core.group(`Docker scout version`, async () => {
+            const res = await exec.getExecOutput('docker', ['scout', 'version'], {
+              ignoreReturnCode: true,
+              silent: true
+            });
+            if (res.stderr.length > 0 && res.exitCode != 0) {
+              throw new Error(res.stderr);
+            }
+            const matchVersion = res.stdout.trim().match(/version:\s(.*?)\s/);
+            version = matchVersion ? matchVersion[1] : null;
+            if (!version) {
+              throw new Error('Failed to get Docker scout version');
+            }
+            core.info(version);
+          });
+
+          // TODO: cache binary

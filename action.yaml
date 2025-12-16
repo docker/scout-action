@@ -172,9 +172,62 @@ inputs:
     required: false
 
 runs:
-  using: node20
-  main: index.js
-
-branding:
-  icon: shield
-  color: gray-dark
+  using: composite
+  steps:
+    - uses: ./actions/install
+      id: install-scout
+      name: Install Docker Scout
+      with:
+        digest: 91fd9f3
+    - uses: ./actions/run
+      id: run-scout
+      name: Run Docker Scout
+      with:
+        command: ${{ inputs.command }}
+        debug: ${{ inputs.debug }}
+        verbose-debug: ${{ inputs.verbose-debug }}
+        summary: ${{ inputs.summary }}
+        organization: ${{ inputs.organization }}
+        image: ${{ inputs.image }}
+        platform: ${{ inputs.platform }}
+        ref: ${{ inputs.ref }}
+        to: ${{ inputs.to }}
+        to-ref: ${{ inputs.to-ref }}
+        to-stream: ${{ inputs.to-stream }}
+        to-env: ${{ inputs.to-env }}
+        to-latest: ${{ inputs.to-latest }}
+        stream: ${{ inputs.stream }}
+        environment: ${{ inputs.environment }}
+        hide-policies: ${{ inputs.hide-policies }}
+        ignore-base: ${{ inputs.ignore-base }}
+        ignore-unchanged: ${{ inputs.ignore-unchanged }}
+        only-vex-affected: ${{ inputs.only-vex-affected }}
+        vex-author: ${{ inputs.vex-author }}
+        vex-location: ${{ inputs.vex-location }}
+        only-fixed: ${{ inputs.only-fixed }}
+        only-unfixed: ${{ inputs.only-unfixed }}
+        only-severities: ${{ inputs.only-severities }}
+        only-package-types: ${{ inputs.only-package-types }}
+        only-cisa-kev: ${{ inputs.only-cisa-kev }}
+        exit-code: ${{ inputs.exit-code }}
+        exit-on: ${{ inputs.exit-on }}
+        sarif-file: ${{ inputs.sarif-file }}
+        format: ${{ inputs.format }}
+        output: ${{ inputs.output }}
+        secrets: ${{ inputs.secrets }}
+        tags: ${{ inputs.tags }}
+        file: ${{ inputs.file }}
+        predicate-type: ${{ inputs.predicate-type }}
+        referrer: ${{ inputs.referrer }}
+        referrer-repository: ${{ inputs.referrer-repository }}
+        registry-write-user: ${{ inputs.registry-write-user }}
+        registry-write-password: ${{ inputs.registry-write-password }}
+        dockerhub-user: ${{ inputs.dockerhub-user }}
+        dockerhub-password: ${{ inputs.dockerhub-password }}
+        registry-user: ${{ inputs.registry-user }}
+        registry-password: ${{ inputs.registry-password }}
+        github-token: ${{ inputs.github-token }}
+        write-comment: ${{ inputs.write-comment }}
+        keep-previous-comments: ${{ inputs.keep-previous-comments }}
+      
+        

@@ -1,0 +1,179 @@
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+name: Run Docker Scout
+description: List vulnerabilities in images; find better base images and upload an image SBOM to Docker Scout
+
+inputs:
+  command:
+    required: true
+    description: |
+      Command(s) to run.
+      Use a comma separated list to run several commands on the same set of parameters, for instance quickview,compare
+  debug:
+    required: false
+    description: Debug
+  verbose-debug:
+    required: false
+    description: Print more verbose debug messages
+  summary:
+    required: false
+    description: Publish the output as GitHub Action summary
+    default: true
+
+  organization:
+    required: false
+    description: Namespace of the Docker organization
+  image:
+    required: false
+    description: Image to analyze
+  platform:
+    required: false
+    description: Platform of the image to analyze
+  ref:
+    required: false
+    description: Ref if needed
+
+  # compare flags
+  to:
+    required: false
+    description: Image to compare to
+  to-ref:
+    required: false
+    description: Ref of image to compare
+  to-stream:
+    required: false
+    description: Compare to image in stream
+    deprecationMessage: Use to-env instead
+  to-env:
+    required: false
+    description: Compare to image in environment
+  to-latest:
+    required: false
+    description: Compare to latest pushed image
+
+  # stream/environment flags
+  stream:
+    required: false
+    description: Name of the stream to record the image
+    deprecationMessage: Use environment instead
+  environment:
+    required: false
+    description: Name of the environment to record the image
+
+  # policy flags
+  hide-policies:
+    required: false
+    description: Hide policies from the output altogether
+
+  # filter flags
+  ignore-base:
+    required: false
+    description: Ignore vulnerabilities from base image
+  ignore-unchanged:
+    required: false
+    description: Filter out unchanged packages
+  only-vex-affected:
+    required: false
+    description: Filter out CVEs that are marked not affected by a VEX statement
+  vex-author:
+    required: false
+    description: List of VEX statement authors to accept
+  vex-location:
+    required: false
+    description: File location of directory or file containing VEX statement
+  only-fixed:
+    required: false
+    description: Filter to fixable CVEs
+  only-unfixed:
+    required: false
+    description: Filter to unfixed CVEs
+  only-severities:
+    required: false
+    description: Comma separated list of severities (critical, high, medium, low, unspecified) to filter CVEs by
+  only-package-types:
+    required: false
+    description: Comma separated list of package types (like apk, deb, rpm, npm, pypi, golang, etc)
+  only-cisa-kev:
+    required: false
+    description: Filter to CVEs listed in the CISA Known Exploited Vulnerabilities catalog
+  exit-code:
+    required: false
+    description: Fail the action step if vulnerability changes are detected
+  exit-on:
+    required: false
+    description: "(compare only) Comma separated list of conditions to fail the action step if worsened, options are: vulnerability, policy"
+
+  sarif-file:
+    required: false
+    description: Write output to a SARIF file for further processing or upload into GitHub code scanning
+
+  # sbom flags
+  format:
+    required: false
+    description: Format of the SBOM to generate (json, list, spdx, cyclonedx)
+    default: json
+  output:
+    required: false
+    description: Output file for the SBOM
+  secrets:
+    required: false
+    description: Enable secret scanning as part of SBOM indexing
+
+  # attestation add flags
+  tags:
+    required: false
+    description: List of tags to add to the attestation
+  file:
+    required: false
+    description: File path to the attestation file
+  predicate-type:
+    required: false
+    description: Predicate type of the attestation
+  referrer:
+    required: false
+    description: Use OCI referrer API for pushing attestation
+  referrer-repository:
+    required: false
+    description: Repository to push referrer to
+  # credentials needed to push images
+  registry-write-user:
+    description: Registry user to push attestations
+    required: false
+  registry-write-password:
+    description: Registry password to push attestations
+    required: false
+
+  dockerhub-user:
+    required: false
+    description: Docker Hub User
+  dockerhub-password:
+    required: false
+    description: Docker Hub PAT
+
+  # credentials needed to pull private images
+  registry-user:
+    description: Registry user to pull images
+    required: false
+  registry-password:
+    description: Registry password to pull images
+    required: false
+
+  # comments
+  github-token:
+    description: GitHub Token to write comments
+    default: ${{ github.token }}
+    required: false
+  write-comment:
+    description: Write the output as a Pull Request comment
+    required: false
+    default: true
+  keep-previous-comments:
+    description: If set, keep but hide previous comment. If not set, keep and update one single comment per job
+    required: false
+
+runs:
+  using: node20
+  main: index.js
+
+branding:
+  icon: shield
+  color: gray-dark
