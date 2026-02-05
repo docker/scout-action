@@ -96,6 +96,9 @@ inputs:
   only-cisa-kev:
     required: false
     description: Filter to CVEs listed in the CISA Known Exploited Vulnerabilities catalog
+  ignore-suppressed:
+    required: false
+    description: Filter out CVEs affected by Scout suppressions
   exit-code:
     required: false
     description: Fail the action step if vulnerability changes are detected
@@ -106,6 +109,14 @@ inputs:
   sarif-file:
     required: false
     description: Write output to a SARIF file for further processing or upload into GitHub code scanning
+
+  # recommendations flags
+  only-refresh:
+    required: false
+    description: Only display base image refresh recommendations
+  only-update:
+    required: false
+    description: Only display base image update recommendations
 
   # sbom flags
   format:
