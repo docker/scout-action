@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
       - name: OIDC token
         id: docker_oidc
-        uses: docker/oidc-action@v1
+        uses: docker/oidc-action@8932ddc202b04b830439e7ad904e53052cb722a5 #v0
         with:
           connection_id: "6f2f8ebf-c1e9-421a-81db-b69ad61f51a2"
     
