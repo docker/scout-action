@@ -22,9 +22,9 @@ You can run one or multiple commands in the same GitHub Action run. Use a comma 
 
 | <!-- -->  | <!-- -->     | <!-- --> | <!-- -->                                                                                                                                                                                                                          |
 |:----------|:-------------|:---------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `command` | **required** | `string` | Single command to run or comma separated list of commands to run in order.<br/>Possible values:<br/><ul><li>`quickview`</li><li>`compare`</li><li>`cves`</li><li>`recommendations`</li><li>`sbom`</li><li>`environment`</li></ul> |
+| `command` | **required** | `string` | Single command to run or comma separated list of commands to run in order.<br/>Possible values:<br/><ul><li>`quickview`</li><li>`compare`</li><li>`cves`</li><li>`recommendations`</li><li>`sbom`</li><li>`environment`</li><li>`attestation-add`</li></ul> |
 
-The commands will be run in the order of the value, and will share the same parameters.
+The commands will be run in the order of the value, and will share the same parameters. If a command exits non-zero (for example when `exit-code` is `true`), the action step stops and the remaining commands are not executed.
 
 For instance, if you built an image and want to display a `quickview` as well as to `compare` it against the latest
 indexed one, set the action as following:
@@ -176,6 +176,7 @@ See [Prefix](#prefix) above about the available prefixes for the `to` argument.
 | `only-vex-affected`  | **optional** default is `false`                | `boolean` | Filter out CVEs that are marked not affected by a VEX statement                                           |
 | `vex-author`         | **optional** default is empty                  | `string`  | List of VEX statement authors to accept                                                                   |
 | `vex-location`       | **optional** default is empty                  | `string`  | File location of directory or file containing VEX statement                                               |
+| `ignore-suppressed`  | **optional** default is `false`                | `boolean` | Filter out CVEs affected by Scout suppressions                                                            |
 
 ## `sbom` Inputs
 
@@ -183,7 +184,7 @@ See [Prefix](#prefix) above about the available prefixes for the `to` argument.
 |:----------|:--------------------------------|:----------|:---------------------------------------------------------------------|
 | `format`  | **optional** default is `json`  | `string`  | Format of the SBOM to generate (`json`, `list`, `spdx`, `cyclonedx`) |
 | `output`  | **optional** default is empty   | `string`  | Path of the output file to write the SBOM                            |
-| `secrets` | **optional** default is `false` | `boolean` | Path of the output file to write the SBOM                            |
+| `secrets` | **optional** default is `false` | `boolean` | Enable secret scanning as part of SBOM indexing                      |
 
 ## `recommendations` Inputs
 
