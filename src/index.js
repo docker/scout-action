@@ -13,7 +13,15 @@ const { fileURLToPath } = require('url');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-async function downloadRelease(version, binaryName) {
+/**
+ * Downloads the specified release of the Docker Scout Action binary from GitHub and saves it to the specified path.
+ *
+ * @param version The version of the release to download (e.g. "v1.2.3")
+ * @param binaryPath The path to download the binary to
+ * @param binaryName The name of the binary to download (e.g. "docker-scout-action_linux_amd64")
+ * @returns {Promise<void>}
+ */
+async function downloadRelease(version, binaryPath, binaryName) {
     const octokit = github.getOctokit(core.getInput('github-token'))
 
     let release;
@@ -29,22 +37,27 @@ async function downloadRelease(version, binaryName) {
         throw e
     }
 
-    const downloadDir = path.join(os.tmpdir(), `scout-action-${version}`)
-    fs.mkdirSync(downloadDir, { recursive: true })
+    fs.mkdirSync(binaryPath, { recursive: true })
 
     for (const asset of release.data.assets) {
         if (asset.name === binaryName) {
-            let binaryPath = path.join(downloadDir, asset.name);
+            const binary = path.join(binaryPath, asset.name);
             core.info(`Downloading asset: ${asset.name} (${(asset.size / 1024 / 1024).toFixed(1)} MB)`)
-            return await tc.downloadTool(asset.url, binaryPath, undefined, {
+            await tc.downloadTool(asset.url, binary, undefined, {
                 accept: 'application/octet-stream',
             })
+            return
         }
     }
 
     throw new Error(`Binary ${binaryName} not found in release ${version}`)
 }
 
+/**
+ * Retrieves the appropriate binary name for the current platform and architecture.
+ *
+ * @returns {string}
+ */
 function getBinaryName() {
     const platform = os.platform()
     const arch = os.arch()
@@ -74,26 +87,26 @@ function getBinaryName() {
 async function main() {
     const version = "__VERSION__"
 
-    let binaryName = getBinaryName();
-    let binaryPath;
+    const binaryName = getBinaryName();
+    const binaryPath = path.join(__dirname, "dist");
+    const binary = path.join(binaryPath, binaryName)
 
-    const localBinaryPath = path.join(__dirname, "dist", binaryName)
-    if (fs.existsSync(localBinaryPath)) {
-        binaryPath = localBinaryPath
+    // If the binary already exists (e.g. bundled with the action), use it. Otherwise, download it from GitHub.
+    if (fs.existsSync(binary)) {
         core.info(`Using bundled binary: ${binaryPath}`)
     } else {
-        binaryPath = await downloadRelease(version, binaryName)
+        await downloadRelease(version, binaryPath, binaryName)
     }
 
-    if (!fs.existsSync(binaryPath)) {
-        throw new Error(`Binary not found at ${binaryPath}`)
+    if (!fs.existsSync(binary)) {
+        throw new Error(`Binary not found at ${binary}`)
     }
 
-    fs.chmodSync(binaryPath, 0o755)
+    fs.chmodSync(binary, 0o755)
 
-    core.info(`Using binary: ${binaryPath}`)
+    core.info(`Using binary: ${binary}`)
 
-    const result = childProcess.spawnSync(binaryPath, { stdio: 'inherit' })
+    const result = childProcess.spawnSync(binary, { stdio: 'inherit' })
     if (typeof result.status === 'number') {
         process.exit(result.status)
     }
