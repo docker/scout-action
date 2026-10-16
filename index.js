@@ -33921,7 +33921,8 @@ function requireSrc () {
 	 * @returns {Promise<void>}
 	 */
 	async function downloadRelease(version, binaryPath, binaryName) {
-	    const octokit = github.getOctokit(core.getInput('github-token'));
+	    const token = core.getInput('github-token');
+	    const octokit = github.getOctokit(token);
 
 	    let release;
 	    try {
@@ -33942,7 +33943,7 @@ function requireSrc () {
 	        if (asset.name === binaryName) {
 	            const binary = path.join(binaryPath, asset.name);
 	            core.info(`Downloading asset: ${asset.name} (${(asset.size / 1024 / 1024).toFixed(1)} MB)`);
-	            await tc.downloadTool(asset.url, binary, undefined, {
+	            await tc.downloadTool(asset.url, binary, `token ${token}`, {
 	                accept: 'application/octet-stream',
 	            });
 	            return
@@ -33984,7 +33985,7 @@ function requireSrc () {
 	}
 
 	async function main() {
-	    const version = "v1.26.0";
+	    const version = "0.0.0";
 
 	    const binaryName = getBinaryName();
 	    const binaryPath = path.join(__dirname, "dist");

@@ -22,7 +22,8 @@ const __dirname = path.dirname(__filename);
  * @returns {Promise<void>}
  */
 async function downloadRelease(version, binaryPath, binaryName) {
-    const octokit = github.getOctokit(core.getInput('github-token'))
+    const token = core.getInput('github-token')
+    const octokit = github.getOctokit(token)
 
     let release;
     try {
@@ -43,7 +44,7 @@ async function downloadRelease(version, binaryPath, binaryName) {
         if (asset.name === binaryName) {
             const binary = path.join(binaryPath, asset.name);
             core.info(`Downloading asset: ${asset.name} (${(asset.size / 1024 / 1024).toFixed(1)} MB)`)
-            await tc.downloadTool(asset.url, binary, undefined, {
+            await tc.downloadTool(asset.url, binary, `token ${token}`, {
                 accept: 'application/octet-stream',
             })
             return
