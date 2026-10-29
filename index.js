@@ -32908,7 +32908,11 @@ function requireManifest () {
 	(function (module, exports$1) {
 		var __createBinding = (manifest && manifest.__createBinding) || (Object.create ? (function(o, m, k, k2) {
 		    if (k2 === undefined) k2 = k;
-		    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+		    var desc = Object.getOwnPropertyDescriptor(m, k);
+		    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+		      desc = { enumerable: true, get: function() { return m[k]; } };
+		    }
+		    Object.defineProperty(o, k2, desc);
 		}) : (function(o, m, k, k2) {
 		    if (k2 === undefined) k2 = k;
 		    o[k2] = m[k];
@@ -32921,7 +32925,7 @@ function requireManifest () {
 		var __importStar = (manifest && manifest.__importStar) || function (mod) {
 		    if (mod && mod.__esModule) return mod;
 		    var result = {};
-		    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+		    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
 		    __setModuleDefault(result, mod);
 		    return result;
 		};
@@ -32951,11 +32955,11 @@ function requireManifest () {
 		        let file;
 		        for (const candidate of candidates) {
 		            const version = candidate.version;
-		            core_1.debug(`check ${version} satisfies ${versionSpec}`);
+		            (0, core_1.debug)(`check ${version} satisfies ${versionSpec}`);
 		            if (semver.satisfies(version, versionSpec) &&
 		                (!stable || candidate.stable === stable)) {
 		                file = candidate.files.find(item => {
-		                    core_1.debug(`${item.arch}===${archFilter} && ${item.platform}===${platFilter}`);
+		                    (0, core_1.debug)(`${item.arch}===${archFilter} && ${item.platform}===${platFilter}`);
 		                    let chk = item.arch === archFilter && item.platform === platFilter;
 		                    if (chk && item.platform_version) {
 		                        const osVersion = module.exports._getOsVersion();
@@ -32969,7 +32973,7 @@ function requireManifest () {
 		                    return chk;
 		                });
 		                if (file) {
-		                    core_1.debug(`matched ${candidate.version}`);
+		                    (0, core_1.debug)(`matched ${candidate.version}`);
 		                    match = candidate;
 		                    break;
 		                }
@@ -33007,10 +33011,7 @@ function requireManifest () {
 		                if (parts.length === 2 &&
 		                    (parts[0].trim() === 'VERSION_ID' ||
 		                        parts[0].trim() === 'DISTRIB_RELEASE')) {
-		                    version = parts[1]
-		                        .trim()
-		                        .replace(/^"/, '')
-		                        .replace(/"$/, '');
+		                    version = parts[1].trim().replace(/^"/, '').replace(/"$/, '');
 		                    break;
 		                }
 		            }
@@ -33037,97 +33038,6 @@ function requireManifest () {
 	return manifest$1.exports;
 }
 
-var rng;
-var hasRequiredRng;
-
-function requireRng () {
-	if (hasRequiredRng) return rng;
-	hasRequiredRng = 1;
-	// Unique ID creation requires a high quality random # generator.  In node.js
-	// this is pretty straight-forward - we use the crypto API.
-
-	var crypto = require$$0$1;
-
-	rng = function nodeRNG() {
-	  return crypto.randomBytes(16);
-	};
-	return rng;
-}
-
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-
-var bytesToUuid_1;
-var hasRequiredBytesToUuid;
-
-function requireBytesToUuid () {
-	if (hasRequiredBytesToUuid) return bytesToUuid_1;
-	hasRequiredBytesToUuid = 1;
-	var byteToHex = [];
-	for (var i = 0; i < 256; ++i) {
-	  byteToHex[i] = (i + 0x100).toString(16).substr(1);
-	}
-
-	function bytesToUuid(buf, offset) {
-	  var i = offset || 0;
-	  var bth = byteToHex;
-	  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-	  return ([
-	    bth[buf[i++]], bth[buf[i++]],
-	    bth[buf[i++]], bth[buf[i++]], '-',
-	    bth[buf[i++]], bth[buf[i++]], '-',
-	    bth[buf[i++]], bth[buf[i++]], '-',
-	    bth[buf[i++]], bth[buf[i++]], '-',
-	    bth[buf[i++]], bth[buf[i++]],
-	    bth[buf[i++]], bth[buf[i++]],
-	    bth[buf[i++]], bth[buf[i++]]
-	  ]).join('');
-	}
-
-	bytesToUuid_1 = bytesToUuid;
-	return bytesToUuid_1;
-}
-
-var v4_1;
-var hasRequiredV4;
-
-function requireV4 () {
-	if (hasRequiredV4) return v4_1;
-	hasRequiredV4 = 1;
-	var rng = requireRng();
-	var bytesToUuid = requireBytesToUuid();
-
-	function v4(options, buf, offset) {
-	  var i = buf && offset || 0;
-
-	  if (typeof(options) == 'string') {
-	    buf = options === 'binary' ? new Array(16) : null;
-	    options = null;
-	  }
-	  options = options || {};
-
-	  var rnds = options.random || (options.rng || rng)();
-
-	  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-	  rnds[6] = (rnds[6] & 0x0f) | 0x40;
-	  rnds[8] = (rnds[8] & 0x3f) | 0x80;
-
-	  // Copy bytes to buffer, if provided
-	  if (buf) {
-	    for (var ii = 0; ii < 16; ++ii) {
-	      buf[i + ii] = rnds[ii];
-	    }
-	  }
-
-	  return buf || bytesToUuid(rnds);
-	}
-
-	v4_1 = v4;
-	return v4_1;
-}
-
 var retryHelper = {};
 
 var hasRequiredRetryHelper;
@@ -33137,7 +33047,11 @@ function requireRetryHelper () {
 	hasRequiredRetryHelper = 1;
 	var __createBinding = (retryHelper && retryHelper.__createBinding) || (Object.create ? (function(o, m, k, k2) {
 	    if (k2 === undefined) k2 = k;
-	    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+	    var desc = Object.getOwnPropertyDescriptor(m, k);
+	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+	      desc = { enumerable: true, get: function() { return m[k]; } };
+	    }
+	    Object.defineProperty(o, k2, desc);
 	}) : (function(o, m, k, k2) {
 	    if (k2 === undefined) k2 = k;
 	    o[k2] = m[k];
@@ -33150,7 +33064,7 @@ function requireRetryHelper () {
 	var __importStar = (retryHelper && retryHelper.__importStar) || function (mod) {
 	    if (mod && mod.__esModule) return mod;
 	    var result = {};
-	    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
 	    __setModuleDefault(result, mod);
 	    return result;
 	};
@@ -33227,7 +33141,11 @@ function requireToolCache () {
 	hasRequiredToolCache = 1;
 	var __createBinding = (toolCache && toolCache.__createBinding) || (Object.create ? (function(o, m, k, k2) {
 	    if (k2 === undefined) k2 = k;
-	    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+	    var desc = Object.getOwnPropertyDescriptor(m, k);
+	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+	      desc = { enumerable: true, get: function() { return m[k]; } };
+	    }
+	    Object.defineProperty(o, k2, desc);
 	}) : (function(o, m, k, k2) {
 	    if (k2 === undefined) k2 = k;
 	    o[k2] = m[k];
@@ -33240,7 +33158,7 @@ function requireToolCache () {
 	var __importStar = (toolCache && toolCache.__importStar) || function (mod) {
 	    if (mod && mod.__esModule) return mod;
 	    var result = {};
-	    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
 	    __setModuleDefault(result, mod);
 	    return result;
 	};
@@ -33253,13 +33171,11 @@ function requireToolCache () {
 	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
-	var __importDefault = (toolCache && toolCache.__importDefault) || function (mod) {
-	    return (mod && mod.__esModule) ? mod : { "default": mod };
-	};
 	Object.defineProperty(toolCache, "__esModule", { value: true });
 	toolCache.evaluateVersions = toolCache.isExplicitVersion = toolCache.findFromManifest = toolCache.getManifestFromRepo = toolCache.findAllVersions = toolCache.find = toolCache.cacheFile = toolCache.cacheDir = toolCache.extractZip = toolCache.extractXar = toolCache.extractTar = toolCache.extract7z = toolCache.downloadTool = toolCache.HTTPError = void 0;
 	const core = __importStar(requireCore());
 	const io = __importStar(requireIo());
+	const crypto = __importStar(require$$0$1);
 	const fs = __importStar(require$$1);
 	const mm = __importStar(requireManifest());
 	const os = __importStar(require$$0);
@@ -33269,7 +33185,6 @@ function requireToolCache () {
 	const stream = __importStar(require$$0$5);
 	const util = __importStar(require$$0$2);
 	const assert_1 = require$$0$3;
-	const v4_1 = __importDefault(requireV4());
 	const exec_1 = requireExec();
 	const retry_helper_1 = requireRetryHelper();
 	class HTTPError extends Error {
@@ -33294,7 +33209,7 @@ function requireToolCache () {
 	 */
 	function downloadTool(url, dest, auth, headers) {
 	    return __awaiter(this, void 0, void 0, function* () {
-	        dest = dest || path.join(_getTempDirectory(), v4_1.default());
+	        dest = dest || path.join(_getTempDirectory(), crypto.randomUUID());
 	        yield io.mkdirP(path.dirname(dest));
 	        core.debug(`Downloading ${url}`);
 	        core.debug(`Destination ${dest}`);
@@ -33383,8 +33298,8 @@ function requireToolCache () {
 	 */
 	function extract7z(file, dest, _7zPath) {
 	    return __awaiter(this, void 0, void 0, function* () {
-	        assert_1.ok(IS_WINDOWS, 'extract7z() not supported on current OS');
-	        assert_1.ok(file, 'parameter "file" is required');
+	        (0, assert_1.ok)(IS_WINDOWS, 'extract7z() not supported on current OS');
+	        (0, assert_1.ok)(file, 'parameter "file" is required');
 	        dest = yield _createExtractFolder(dest);
 	        const originalCwd = process.cwd();
 	        process.chdir(dest);
@@ -33401,7 +33316,7 @@ function requireToolCache () {
 	                const options = {
 	                    silent: true
 	                };
-	                yield exec_1.exec(`"${_7zPath}"`, args, options);
+	                yield (0, exec_1.exec)(`"${_7zPath}"`, args, options);
 	            }
 	            finally {
 	                process.chdir(originalCwd);
@@ -33430,7 +33345,7 @@ function requireToolCache () {
 	            };
 	            try {
 	                const powershellPath = yield io.which('powershell', true);
-	                yield exec_1.exec(`"${powershellPath}"`, args, options);
+	                yield (0, exec_1.exec)(`"${powershellPath}"`, args, options);
 	            }
 	            finally {
 	                process.chdir(originalCwd);
@@ -33458,7 +33373,7 @@ function requireToolCache () {
 	        // Determine whether GNU tar
 	        core.debug('Checking tar --version');
 	        let versionOutput = '';
-	        yield exec_1.exec('tar --version', [], {
+	        yield (0, exec_1.exec)('tar --version', [], {
 	            ignoreReturnCode: true,
 	            silent: true,
 	            listeners: {
@@ -33494,7 +33409,7 @@ function requireToolCache () {
 	            args.push('--overwrite');
 	        }
 	        args.push('-C', destArg, '-f', fileArg);
-	        yield exec_1.exec(`tar`, args);
+	        yield (0, exec_1.exec)(`tar`, args);
 	        return dest;
 	    });
 	}
@@ -33509,8 +33424,8 @@ function requireToolCache () {
 	 */
 	function extractXar(file, dest, flags = []) {
 	    return __awaiter(this, void 0, void 0, function* () {
-	        assert_1.ok(IS_MAC, 'extractXar() not supported on current OS');
-	        assert_1.ok(file, 'parameter "file" is required');
+	        (0, assert_1.ok)(IS_MAC, 'extractXar() not supported on current OS');
+	        (0, assert_1.ok)(file, 'parameter "file" is required');
 	        dest = yield _createExtractFolder(dest);
 	        let args;
 	        if (flags instanceof Array) {
@@ -33524,7 +33439,7 @@ function requireToolCache () {
 	            args.push('-v');
 	        }
 	        const xarPath = yield io.which('xar', true);
-	        yield exec_1.exec(`"${xarPath}"`, _unique(args));
+	        yield (0, exec_1.exec)(`"${xarPath}"`, _unique(args));
 	        return dest;
 	    });
 	}
@@ -33578,7 +33493,7 @@ function requireToolCache () {
 	                pwshCommand
 	            ];
 	            core.debug(`Using pwsh at path: ${pwshPath}`);
-	            yield exec_1.exec(`"${pwshPath}"`, args);
+	            yield (0, exec_1.exec)(`"${pwshPath}"`, args);
 	        }
 	        else {
 	            const powershellCommand = [
@@ -33599,7 +33514,7 @@ function requireToolCache () {
 	            ];
 	            const powershellPath = yield io.which('powershell', true);
 	            core.debug(`Using powershell at path: ${powershellPath}`);
-	            yield exec_1.exec(`"${powershellPath}"`, args);
+	            yield (0, exec_1.exec)(`"${powershellPath}"`, args);
 	        }
 	    });
 	}
@@ -33611,7 +33526,7 @@ function requireToolCache () {
 	            args.unshift('-q');
 	        }
 	        args.unshift('-o'); //overwrite with -o, otherwise a prompt is shown which freezes the run
-	        yield exec_1.exec(`"${unzipPath}"`, args, { cwd: dest });
+	        yield (0, exec_1.exec)(`"${unzipPath}"`, args, { cwd: dest });
 	    });
 	}
 	/**
@@ -33788,7 +33703,7 @@ function requireToolCache () {
 	    return __awaiter(this, void 0, void 0, function* () {
 	        if (!dest) {
 	            // create a temp dir
-	            dest = path.join(_getTempDirectory(), v4_1.default());
+	            dest = path.join(_getTempDirectory(), crypto.randomUUID());
 	        }
 	        yield io.mkdirP(dest);
 	        return dest;
@@ -33861,7 +33776,7 @@ function requireToolCache () {
 	 */
 	function _getCacheDirectory() {
 	    const cacheDirectory = process.env['RUNNER_TOOL_CACHE'] || '';
-	    assert_1.ok(cacheDirectory, 'Expected RUNNER_TOOL_CACHE to be defined');
+	    (0, assert_1.ok)(cacheDirectory, 'Expected RUNNER_TOOL_CACHE to be defined');
 	    return cacheDirectory;
 	}
 	/**
@@ -33869,7 +33784,7 @@ function requireToolCache () {
 	 */
 	function _getTempDirectory() {
 	    const tempDirectory = process.env['RUNNER_TEMP'] || '';
-	    assert_1.ok(tempDirectory, 'Expected RUNNER_TEMP to be defined');
+	    (0, assert_1.ok)(tempDirectory, 'Expected RUNNER_TEMP to be defined');
 	    return tempDirectory;
 	}
 	/**
