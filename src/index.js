@@ -107,6 +107,12 @@ async function main() {
     core.info(`Using binary: ${binary}`)
 
     const result = childProcess.spawnSync(binary, { stdio: 'inherit' })
+    
+    if (result.error) {
+        core.setFailed(`Failed to execute binary: ${result.error.message}`)
+        process.exit(1)
+    }
+
     if (typeof result.status === 'number') {
         process.exit(result.status)
     }
